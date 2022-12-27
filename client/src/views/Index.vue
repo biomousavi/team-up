@@ -1,7 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import IndexHeader from '@/components/Index/Header.vue';
+</script>
 
 <template>
-  <main></main>
+  <main>
+    <v-container class="px-md-0">
+      <IndexHeader />
+    </v-container>
+  </main>
 </template>
-
-<style scoped></style>

@@ -1,10 +1,10 @@
-import "vuetify/styles";
-import { createVuetify } from "vuetify";
-import { mdi } from "vuetify/iconsets/mdi-svg";
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import { mdi } from 'vuetify/iconsets/mdi-svg';
 
 const vuetify = createVuetify({
   icons: {
-    defaultSet: "mdi",
+    defaultSet: 'mdi',
     sets: {
       mdi,
     },
@@ -13,8 +13,8 @@ const vuetify = createVuetify({
     themes: {
       light: {
         colors: {
-          primary: "#1867C0",
-          secondary: "#5CBBF6",
+          primary: '#1a73e8',
+          secondary: '#5f6368',
         },
       },
     },
