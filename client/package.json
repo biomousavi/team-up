@@ -14,6 +14,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@splidejs/vue-splide": "^0.6.12",
     "pinia": "^2.0.26",
     "socket.io-client": "^4.5.4",
     "vite-plugin-vuetify": "^1.0.0",
