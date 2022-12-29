@@ -4,7 +4,7 @@ import IndexShowcase from '@/components/Index/Showcase.vue';
 </script>
 
 <template>
-  <main style="min-height: 100vh">
+  <main style="min-height: 90vh">
     <v-container class="h-100">
       <IndexHeader />
       <IndexShowcase />

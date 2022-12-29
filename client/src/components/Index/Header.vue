@@ -21,18 +21,15 @@ function onSettings() {
       <router-link class="mx-1 text-secondary" to="/"> TeamUp </router-link>
     </div>
 
-    <div class="d-flex justify-space-between align-center">
-      <p class="text-secondary mx-2">
-        {{
-          date.toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            weekday: 'short',
-            year: 'numeric',
-            day: 'numeric',
-          })
-        }}
-      </p>
+    <div class="d-flex flex-row-reverse justify-start align-center flex-wrap">
+      <v-btn
+        @click="onSettings"
+        :icon="mdiCogOutline"
+        title="Settings"
+        color="secondary"
+        variant="text"
+      >
+      </v-btn>
 
       <v-btn
         @click="onSettings"
@@ -52,14 +49,17 @@ function onSettings() {
       >
       </v-btn>
 
-      <v-btn
-        @click="onSettings"
-        :icon="mdiCogOutline"
-        title="Settings"
-        color="secondary"
-        variant="text"
-      >
-      </v-btn>
+      <p class="text-secondary mx-2">
+        {{
+          date.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+            weekday: 'short',
+            year: 'numeric',
+            day: 'numeric',
+          })
+        }}
+      </p>
     </div>
   </header>
 </template>
