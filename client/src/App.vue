@@ -7,6 +7,10 @@ const d = useDisplay();
 <template>
   {{ d.name }}
   <v-app>
-    <RouterView />
+    <RouterView v-slot="{ Component }">
+      <XyzTransition xyz="fade" mode="out-in">
+        <component :is="Component" />
+      </XyzTransition>
+    </RouterView>
   </v-app>
 </template>

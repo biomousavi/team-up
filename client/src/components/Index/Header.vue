@@ -17,7 +17,7 @@ function onSettings() {
 <template>
   <XyzTransition appear duration="auto">
     <header class="d-flex justify-space-between align-center">
-      <div class="d-flex align-end" xyz="fade stagger ease-out-back">
+      <div class="d-flex align-end" xyz="fade stagger ease-out">
         <img src="/team.png" alt="TeamUp-image" class="xyz-nested" />
         <router-link class="mx-1 text-secondary xyz-nested" to="/"> TeamUp </router-link>
       </div>

@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import '@splidejs/vue-splide/css/core';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { mdiVideoPlusOutline, mdiLink, mdiPlus, mdiChevronRight, mdiChevronLeft } from '@mdi/js';
-import { Splide, SplideSlide } from '@splidejs/vue-splide';
 import { useRouter } from 'vue-router';
 
 const splide = ref();
 const meetingCode = ref<string>('');
 const isInputFocused = ref<boolean>(false);
-const slideNumber = ref<number>(0);
 
 const router = useRouter();
 
@@ -30,19 +27,6 @@ const slides = [
   },
 ];
 
-function onSlideLeft() {
-  if (slideNumber.value > 0) {
-    slideNumber.value = slideNumber.value - 1;
-    splide.value.go(slideNumber.value);
-  }
-}
-function onSlideRight() {
-  if (slideNumber.value < slides.length - 1) {
-    slideNumber.value = slideNumber.value + 1;
-    splide.value.go(slideNumber.value);
-  }
-}
-
 function onInstantMeet() {
   console.log('instant');
 }
@@ -58,10 +42,6 @@ function onJoin() {
 function onUpdateFocuse(isFocuesd: boolean) {
   isInputFocused.value = isFocuesd;
 }
-
-function onSlideMove(_, newIndex: number) {
-  slideNumber.value = newIndex;
-}
 </script>
 
 <template>
@@ -69,7 +49,7 @@ function onSlideMove(_, newIndex: number) {
     <v-row class="h-100 mt-16" justify="space-between">
       <v-col class="d-flex flex-column justify-center" cols="12" md="7" lg="5">
         <div>
-          <div xyz="left up fade stagger">
+          <div xyz="big fade stagger">
             <h1
               style="line-height: 125%"
               class="xyz-nested font-weight-bold text-h5 text-sm-h4 text-md-h4 text-xl-h2 rubik"
@@ -160,8 +140,8 @@ function onSlideMove(_, newIndex: number) {
           </XyzTransition>
 
           <p xyz="fade down delay-15">
-            <a class="text-primary xyz-nested" style="text-decoration: none" href="/about"
-              >Learn more
+            <a class="text-primary xyz-nested" style="text-decoration: none" href="/about">
+              Learn more
             </a>
             <span class="text-secondary xyz-nested"> about TeamUp</span>
           </p>
@@ -169,38 +149,33 @@ function onSlideMove(_, newIndex: number) {
       </v-col>
 
       <v-col xyz="fade delay-20" class="d-flex align-center justify-center" cols="12" md="5" lg="5">
-        <v-btn
-          @click="onSlideLeft"
-          :disabled="slideNumber === 0"
-          color="secondary"
-          :icon="mdiChevronLeft"
-          variant="text"
-          class="xyz-nested"
-        ></v-btn>
-
-        <Splide
-          class="xyz-nested"
-          @splide:move="onSlideMove"
-          ref="splide"
-          :options="{ rewind: true, arrows: false, width: '70%', autoplay: true }"
-        >
-          <template v-for="slide in slides" :key="slide.title">
-            <SplideSlide>
-              <img :src="slide.img" :alt="slide.title" />
-              <h3>{{ slide.title }}</h3>
-              <p>{{ slide.desc }}</p>
-            </SplideSlide>
+        <v-carousel class="xyz-nested" width="100%" hide-delimiters cycle hide-delimiter-background>
+          <template v-slot:prev="{ props }">
+            <v-btn
+              color="secondary"
+              :icon="mdiChevronLeft"
+              variant="text"
+              class="xyz-nested"
+              @click="props.onClick"
+            ></v-btn>
           </template>
-        </Splide>
 
-        <v-btn
-          class="xyz-nested"
-          color="secondary"
-          @click="onSlideRight"
-          :disabled="slideNumber > 1"
-          :icon="mdiChevronRight"
-          variant="text"
-        ></v-btn>
+          <v-carousel-item v-for="(slide, i) in slides" :key="i">
+            <img :src="slide.img" :alt="slide.title" />
+            <h3>{{ slide.title }}</h3>
+            <p>{{ slide.desc }}</p>
+          </v-carousel-item>
+
+          <template v-slot:next="{ props }">
+            <v-btn
+              class="xyz-nested"
+              color="secondary"
+              :icon="mdiChevronRight"
+              variant="text"
+              @click="props.onClick"
+            ></v-btn>
+          </template>
+        </v-carousel>
       </v-col>
     </v-row>
   </XyzTransition>
