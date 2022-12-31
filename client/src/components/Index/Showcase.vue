@@ -65,128 +65,145 @@ function onSlideMove(_, newIndex: number) {
 </script>
 
 <template>
-  <v-row class="h-100 mt-16" justify="space-between">
-    <v-col class="d-flex flex-column justify-center" cols="12" md="7" lg="5">
-      <div>
-        <h1
-          style="line-height: 125%"
-          class="font-weight-bold text-h5 text-sm-h4 text-md-h4 text-xl-h2 rubik"
-        >
-          Premium video meetings.
-          <br />
-          Now free for everyone.
-        </h1>
+  <XyzTransition appear duration="auto">
+    <v-row class="h-100 mt-16" justify="space-between">
+      <v-col class="d-flex flex-column justify-center" cols="12" md="7" lg="5">
+        <div>
+          <div xyz="left up fade stagger">
+            <h1
+              style="line-height: 125%"
+              class="xyz-nested font-weight-bold text-h5 text-sm-h4 text-md-h4 text-xl-h2 rubik"
+            >
+              Premium video meetings.
+              <br />
+              Now free for everyone.
+            </h1>
 
-        <p class="text-secondary text-body mt-6 rubik">
-          We re-engineered the service that we built for secure business meetings
-          <br />
-          TeamUp, to make it free and available for all. Meet with your teammates.
-        </p>
+            <p class="xyz-nested text-secondary text-body mt-6 rubik">
+              We re-engineered the service that we built for secure business meetings
+              <br />
+              TeamUp, to make it free and available for all. Meet with your teammates.
+            </p>
+          </div>
 
-        <v-row no-gutters align="start" justify="start" class="mt-7">
-          <v-col cols="auto">
-            <v-menu transition="slide-y-transition">
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  min-height="40px"
-                  variant="flat"
+          <v-row
+            no-gutters
+            align="start"
+            justify="start"
+            class="mt-7"
+            xyz="duration delay-8 down fade stagger"
+          >
+            <v-col class="xyz-nested" cols="auto">
+              <v-menu transition="slide-y-transition">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    min-height="40px"
+                    variant="flat"
+                    color="primary"
+                    :prepend-icon="mdiVideoPlusOutline"
+                    class="font-weight-bold text-capitalize"
+                  >
+                    New Meeting
+                  </v-btn>
+                </template>
+                <v-list density="compact">
+                  <v-list-item
+                    @click="onLaterMeet"
+                    :prepend-icon="mdiLink"
+                    title="Create a meeting for later"
+                  />
+                  <v-list-item
+                    @click="onInstantMeet"
+                    :prepend-icon="mdiPlus"
+                    title="Start an instant meeting"
+                  />
+                </v-list>
+              </v-menu>
+            </v-col>
+
+            <v-col class="xyz-nested mx-0 mx-sm-3 my-3 my-sm-0" cols="9" sm="5" md="7" xl="5">
+              <v-slide-x-transition
+                class="d-flex align-start justify-space-between w-100"
+                group
+                tag="div"
+              >
+                <v-text-field
+                  style="max-width: 85%"
+                  key="input"
+                  @update:focused="onUpdateFocuse"
+                  v-model="meetingCode"
                   color="primary"
-                  :prepend-icon="mdiVideoPlusOutline"
+                  density="compact"
+                  variant="outlined"
+                  placeholder="Enter a code or link"
+                ></v-text-field>
+
+                <v-btn
+                  @click="onJoin"
+                  key="join"
+                  variant="text"
+                  color="primary"
+                  min-height="40px"
+                  :disabled="meetingCode?.length < 8"
+                  v-if="isInputFocused"
                   class="font-weight-bold text-capitalize"
                 >
-                  New Meeting
+                  Join
                 </v-btn>
-              </template>
-              <v-list density="compact">
-                <v-list-item
-                  @click="onLaterMeet"
-                  :prepend-icon="mdiLink"
-                  title="Create a meeting for later"
-                />
-                <v-list-item
-                  @click="onInstantMeet"
-                  :prepend-icon="mdiPlus"
-                  title="Start an instant meeting"
-                />
-              </v-list>
-            </v-menu>
-          </v-col>
+              </v-slide-x-transition>
+            </v-col>
+          </v-row>
 
-          <v-col class="mx-0 mx-sm-3 my-3 my-sm-0" cols="9" sm="5" md="7" xl="5">
-            <v-slide-x-transition
-              class="d-flex align-start justify-space-between w-100"
-              group
-              tag="div"
-            >
-              <v-text-field
-                style="max-width: 85%"
-                key="input"
-                @update:focused="onUpdateFocuse"
-                v-model="meetingCode"
-                color="primary"
-                density="compact"
-                variant="outlined"
-                placeholder="Enter a code or link"
-              ></v-text-field>
+          <XyzTransition appear duration="auto" xyz="fade left-5 small-100% delay-15">
+            <v-divider class="my-5"></v-divider>
+          </XyzTransition>
 
-              <v-btn
-                @click="onJoin"
-                key="join"
-                variant="text"
-                color="primary"
-                min-height="40px"
-                :disabled="meetingCode?.length < 8"
-                v-if="isInputFocused"
-                class="font-weight-bold text-capitalize"
-              >
-                Join
-              </v-btn>
-            </v-slide-x-transition>
-          </v-col>
-        </v-row>
+          <p xyz="fade down delay-15">
+            <a class="text-primary xyz-nested" style="text-decoration: none" href="/about"
+              >Learn more
+            </a>
+            <span class="text-secondary xyz-nested"> about TeamUp</span>
+          </p>
+        </div>
+      </v-col>
 
-        <v-divider class="my-5"></v-divider>
+      <v-col xyz="fade delay-20" class="d-flex align-center justify-center" cols="12" md="5" lg="5">
+        <v-btn
+          @click="onSlideLeft"
+          :disabled="slideNumber === 0"
+          color="secondary"
+          :icon="mdiChevronLeft"
+          variant="text"
+          class="xyz-nested"
+        ></v-btn>
 
-        <p>
-          <a class="text-primary" style="text-decoration: none" href="/about">Learn more </a>
-          <span class="text-secondary"> about TeamUp</span>
-        </p>
-      </div>
-    </v-col>
+        <Splide
+          class="xyz-nested"
+          @splide:move="onSlideMove"
+          ref="splide"
+          :options="{ rewind: true, arrows: false, width: '70%', autoplay: true }"
+        >
+          <template v-for="slide in slides" :key="slide.title">
+            <SplideSlide>
+              <img :src="slide.img" :alt="slide.title" />
+              <h3>{{ slide.title }}</h3>
+              <p>{{ slide.desc }}</p>
+            </SplideSlide>
+          </template>
+        </Splide>
 
-    <v-col class="d-flex align-center justify-center" cols="12" md="5" lg="5">
-      <v-btn
-        @click="onSlideLeft"
-        :disabled="slideNumber === 0"
-        color="secondary"
-        :icon="mdiChevronLeft"
-        variant="text"
-      ></v-btn>
-
-      <Splide
-        @splide:move="onSlideMove"
-        ref="splide"
-        :options="{ rewind: true, arrows: false, width: '70%', autoplay: true }"
-      >
-        <template v-for="slide in slides" :key="slide.title">
-          <SplideSlide>
-            <img :src="slide.img" :alt="slide.title" />
-            <h3>{{ slide.title }}</h3>
-            <p>{{ slide.desc }}</p>
-          </SplideSlide>
-        </template>
-      </Splide>
-
-      <v-btn
-        color="secondary"
-        @click="onSlideRight"
-        :disabled="slideNumber > 1"
-        :icon="mdiChevronRight"
-        variant="text"
-      ></v-btn>
-    </v-col>
-  </v-row>
+        <v-btn
+          class="xyz-nested"
+          color="secondary"
+          @click="onSlideRight"
+          :disabled="slideNumber > 1"
+          :icon="mdiChevronRight"
+          variant="text"
+        ></v-btn>
+      </v-col>
+    </v-row>
+  </XyzTransition>
 </template>
 
 <style scoped>
