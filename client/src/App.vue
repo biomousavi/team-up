@@ -5,8 +5,8 @@ const d = useDisplay();
 </script>
 
 <template>
-  {{ d.name }}
-  <v-app>
+  <!-- {{ d.name }} -->
+  <v-app style="min-height: 100vh">
     <RouterView v-slot="{ Component }">
       <XyzTransition xyz="fade" mode="out-in">
         <component :is="Component" />

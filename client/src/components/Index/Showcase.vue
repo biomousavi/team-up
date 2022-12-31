@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import 'swiper/css';
+import { useRouter } from 'vue-router';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/vue';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { mdiVideoPlusOutline, mdiLink, mdiPlus, mdiChevronRight, mdiChevronLeft } from '@mdi/js';
-import { useRouter } from 'vue-router';
 
-const splide = ref();
+const swiperInstance = ref();
 const meetingCode = ref<string>('');
 const isInputFocused = ref<boolean>(false);
 
+function onSwiper(instance) {
+  swiperInstance.value = instance;
+}
 const router = useRouter();
 
 const slides = [
@@ -42,11 +47,18 @@ function onJoin() {
 function onUpdateFocuse(isFocuesd: boolean) {
   isInputFocused.value = isFocuesd;
 }
+
+function onSlideNext() {
+  swiperInstance.value.slideNext();
+}
+function onSlidePrev() {
+  swiperInstance.value.slidePrev();
+}
 </script>
 
 <template>
   <XyzTransition appear duration="auto">
-    <v-row class="h-100 mt-16" justify="space-between">
+    <v-row class="h-100" justify="space-between">
       <v-col class="d-flex flex-column justify-center" cols="12" md="7" lg="5">
         <div>
           <div xyz="big fade stagger">
@@ -148,34 +160,16 @@ function onUpdateFocuse(isFocuesd: boolean) {
         </div>
       </v-col>
 
-      <v-col xyz="fade delay-20" class="d-flex align-center justify-center" cols="12" md="5" lg="5">
-        <v-carousel class="xyz-nested" width="100%" hide-delimiters cycle hide-delimiter-background>
-          <template v-slot:prev="{ props }">
-            <v-btn
-              color="secondary"
-              :icon="mdiChevronLeft"
-              variant="text"
-              class="xyz-nested"
-              @click="props.onClick"
-            ></v-btn>
-          </template>
-
-          <v-carousel-item v-for="(slide, i) in slides" :key="i">
+      <v-col xyz="fade delay-20" class="d-flex align-center" cols="12" md="5" lg="5">
+        <v-btn color="secondary" @click="onSlidePrev" :icon="mdiChevronLeft" variant="text"></v-btn>
+        <Swiper :slides-per-view="1" :space-between="50" @swiper="onSwiper">
+          <swiper-slide class="text-center" v-for="(slide, i) in slides" :key="i">
             <img :src="slide.img" :alt="slide.title" />
             <h3>{{ slide.title }}</h3>
             <p>{{ slide.desc }}</p>
-          </v-carousel-item>
-
-          <template v-slot:next="{ props }">
-            <v-btn
-              class="xyz-nested"
-              color="secondary"
-              :icon="mdiChevronRight"
-              variant="text"
-              @click="props.onClick"
-            ></v-btn>
-          </template>
-        </v-carousel>
+          </swiper-slide>
+        </Swiper>
+        <v-btn color="secondary" @click="onSlideNext" :icon="mdiChevronRight" variant="text"></v-btn>
       </v-col>
     </v-row>
   </XyzTransition>
@@ -184,14 +178,5 @@ function onUpdateFocuse(isFocuesd: boolean) {
 <style scoped>
 img {
   width: 100%;
-  height: 100%;
-}
-
-.splide__slide {
-  display: flex;
-  text-align: center;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
 }
 </style>
