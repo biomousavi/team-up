@@ -9,6 +9,8 @@ const swiperInstance = ref();
 const meetingCode = ref<string>('');
 const isInputFocused = ref<boolean>(false);
 
+const slideIndex = ref<number>(0);
+
 function onSwiper(instance) {
   swiperInstance.value = instance;
 }
@@ -49,11 +51,22 @@ function onUpdateFocuse(isFocuesd: boolean) {
 }
 
 function onSlideNext() {
-  swiperInstance.value.slideNext();
+  if (slideIndex.value < slides.length - 1) {
+    slideIndex.value++;
+  }
 }
 function onSlidePrev() {
-  swiperInstance.value.slidePrev();
+  if (slideIndex.value > 0) {
+    slideIndex.value--;
+  }
 }
+
+// function onSlideNext() {
+//   swiperInstance.value.slideNext();
+// }
+// function onSlidePrev() {
+//   swiperInstance.value.slidePrev();
+// }
 </script>
 
 <template>
@@ -161,15 +174,32 @@ function onSlidePrev() {
       </v-col>
 
       <v-col xyz="fade delay-20" class="d-flex align-center" cols="12" md="5" lg="5">
-        <v-btn color="secondary" @click="onSlidePrev" :icon="mdiChevronLeft" variant="text"></v-btn>
-        <Swiper :slides-per-view="1" :space-between="50" @swiper="onSwiper">
-          <swiper-slide class="text-center" v-for="(slide, i) in slides" :key="i">
-            <img :src="slide.img" :alt="slide.title" />
-            <h3>{{ slide.title }}</h3>
-            <p>{{ slide.desc }}</p>
-          </swiper-slide>
-        </Swiper>
-        <v-btn color="secondary" @click="onSlideNext" :icon="mdiChevronRight" variant="text"></v-btn>
+        <v-btn
+          color="secondary"
+          :disabled="slideIndex === 0"
+          @click="onSlidePrev"
+          :icon="mdiChevronLeft"
+          variant="text"
+        ></v-btn>
+        <XyzTransition xyz="fade stagger delay-0" mode="out-in">
+          <div class="d-flex flex-column text-center" :key="slideIndex">
+            <img
+              class="xyz-nested"
+              key="0"
+              :src="slides[slideIndex].img"
+              :alt="slides[slideIndex].title"
+            />
+            <h3 class="xyz-nested" key="1">{{ slides[slideIndex].title }}</h3>
+            <p class="xyz-nested" key="2">{{ slides[slideIndex].desc }}</p>
+          </div>
+        </XyzTransition>
+        <v-btn
+          color="secondary"
+          @click="onSlideNext"
+          :icon="mdiChevronRight"
+          variant="text"
+          :disabled="slideIndex === slides.length - 1"
+        ></v-btn>
       </v-col>
     </v-row>
   </XyzTransition>
@@ -178,5 +208,6 @@ function onSlidePrev() {
 <style scoped>
 img {
   width: 100%;
+  height: auto;
 }
 </style>

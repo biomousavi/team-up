@@ -39,7 +39,7 @@ onMounted(() => {
   interval = setInterval(() => (date.value = new Date()), 60000);
 });
 
-const getRoomId = () => route.params.roomId as string;
+const getMeetId = () => route.params.roomId as string;
 
 function onToggleHand() {
   handRaised.value = !handRaised.value;
@@ -101,17 +101,6 @@ function onToggleChat() {
           </p>
 
           <div class="d-flex justify-space-between align-center bg-grey-lighten-3 rounded-pill">
-            <!-- <input type="text" />
-
-            <v-text-field
-              :append-inner-icon="mdiSend"
-              variant="plain"
-              density="compact"
-              class="rounded-pill bg-grey-lighten-3 px-4 pb-3"
-              hide-details
-              placeholder="Send a message to everyone"
-            ></v-text-field> -->
-
             <textarea
               v-model="inputMessage"
               rows="1"
@@ -143,7 +132,7 @@ function onToggleChat() {
           {{ date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
         </span>
         <span class="mx-2 text-secondary">|</span>
-        <span> {{ getRoomId() }} </span>
+        <span> {{ getMeetId() }} </span>
       </div>
 
       <!-- center section -->
