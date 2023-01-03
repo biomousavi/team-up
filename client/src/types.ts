@@ -1,10 +1,10 @@
 export interface JoinPayload {
-  roomId: string;
+  name: string;
+  email: string;
+  meetId: string;
 }
-export interface CodeChangedPayload {
-  roomId: string;
-  changes: any;
-  selection: any;
+export interface NewMeetAck {
+  meetId: string;
 }
 
 export interface ParticipantsPayload {
@@ -13,13 +13,12 @@ export interface ParticipantsPayload {
 
 export interface JoinAck {
   status: 'ok' | 'error';
-  changes?: any;
-  roomId?: string;
+  message: string;
+  // TODO:
 }
 
-export enum RoomEvents {
-  JOIN = 'join',
-  PARTICIPANTS = 'participants',
-  CODE_CHANGED = 'code_changed',
-  CODE_CHANGES = 'code_changes',
+export type MeetEvent = 'join' | 'left' | 'new-meet';
+
+export interface MeetEvents {
+  [key: string]: MeetEvent;
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onBeforeMount } from 'vue';
 import {
   mdiSend,
   mdiMicrophone,
@@ -13,14 +13,28 @@ import {
   mdiInformationOutline,
   mdiMessageTextOutline,
   mdiWindowClose,
+  mdiAccount,
+  mdiCogBox,
+  mdiEmail,
 } from '@mdi/js';
+import { useUserStore } from '@/stores/user';
+import { useMeetStore } from '@/stores/meet';
+import type { VTextField } from 'vuetify/components/VTextField';
+import socket from '../socket';
+import type { JoinPayload, JoinAck, MeetEvent } from '../types';
+import type { Socket } from 'socket.io-client';
 
 const route = useRoute();
-const date = ref<Date>(new Date());
+const user = useUserStore();
+const meet = useMeetStore();
+
+const credentialsModal = ref<boolean>(false);
+const nameInput = ref<VTextField>();
+const emailInput = ref<VTextField>();
 
 const inputMessage = ref<string | undefined>();
 
-const chatOn = ref<boolean>(true);
+const chatOn = ref<boolean>(false);
 
 const handRaised = ref<boolean>(false);
 const handColor = ref<'white' | 'primary'>('white');
@@ -33,13 +47,56 @@ const camOn = ref<boolean>(true);
 const camIcon = ref<string>(mdiVideoOutline);
 const camColor = ref<'white' | 'red'>('white');
 
-let interval;
-onUnmounted(() => clearInterval(interval));
-onMounted(() => {
-  interval = setInterval(() => (date.value = new Date()), 60000);
-});
+onBeforeMount(initMeeting);
 
-const getMeetId = () => route.params.roomId as string;
+function initMeeting() {
+  // check user credentials
+  if (user.validCredentials) {
+    joinToMeet(socket, {
+      name: user.name!,
+      email: user.email!,
+      meetId: getMeetId(),
+    });
+  } else {
+    toggleCredentialInput();
+  }
+}
+
+function joinToMeet(sockets: Socket, payload: JoinPayload) {
+  const event: MeetEvent = 'join';
+  sockets.emit(event, payload, handleJoinAck);
+
+  function handleJoinAck(ack: JoinAck) {
+    console.log(ack);
+  }
+}
+
+function toggleCredentialInput() {
+  credentialsModal.value = !credentialsModal.value;
+}
+
+const rules = {
+  required: (value: string) => !!value || 'Required.',
+  email: (value: string) => {
+    const pattern =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return pattern.test(value) || 'Invalid e-mail.';
+  },
+};
+
+async function onSaveInput() {
+  // validate inputs
+  const nameErrors = await nameInput.value?.validate();
+  const emailErrors = await emailInput.value?.validate();
+
+  // check error length if exists
+  if (!nameErrors?.length && !emailErrors?.length) {
+    toggleCredentialInput();
+    initMeeting();
+  }
+}
+
+const getMeetId = () => route.params.meetId as string;
 
 function onToggleHand() {
   handRaised.value = !handRaised.value;
@@ -67,6 +124,52 @@ function onToggleChat() {
 
 <template>
   <main class="d-flex flex-column justify-space-between">
+    <v-dialog persistent v-model="credentialsModal">
+      <v-row no-gutters justify="center" align="center">
+        <v-col cols="11" sm="6" md="4" lg="3" xl="2">
+          <v-card class="rounded-lg">
+            <v-card-title class="text-center font-weight-bold"> Name & Email </v-card-title>
+
+            <v-card-text>
+              <div class="my-2 text-subtitle-2 font-weight-bold">Name</div>
+              <v-text-field
+                ref="nameInput"
+                placeholder="Enter your name"
+                density="compact"
+                variant="outlined"
+                :rules="[rules.required]"
+                v-model="user.name"
+                :prepend-inner-icon="mdiAccount"
+              ></v-text-field>
+
+              <div class="my-2 text-subtitle-2 font-weight-bold">Email</div>
+              <v-text-field
+                ref="emailInput"
+                placeholder="Enter your email"
+                :rules="[rules.required, rules.email]"
+                density="compact"
+                variant="outlined"
+                v-model="user.email"
+                :prepend-inner-icon="mdiEmail"
+              ></v-text-field>
+            </v-card-text>
+
+            <v-card-actions class="d-flex justify-end">
+              <v-btn
+                color="black"
+                variant="tonal"
+                class="font-weight-bold"
+                @click="onSaveInput"
+                rounded="lg"
+              >
+                save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-dialog>
+
     <div class="d-flex h-100" style="position: relative" :class="{ 'chat-on': chatOn }">
       <div class="scene">
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero esse eveniet saepe voluptate
@@ -129,7 +232,7 @@ function onToggleChat() {
       <!-- left section -->
       <div class="text-white">
         <span>
-          {{ date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
+          {{ meet.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
         </span>
         <span class="mx-2 text-secondary">|</span>
         <span> {{ getMeetId() }} </span>

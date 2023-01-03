@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import 'swiper/css';
 import { useRouter } from 'vue-router';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/vue';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import { mdiVideoPlusOutline, mdiLink, mdiPlus, mdiChevronRight, mdiChevronLeft } from '@mdi/js';
+import socket from '@/socket';
+import type { MeetEvent, NewMeetAck } from '@/types';
+import MeetInfoCard from '../MeetInfoCard.vue';
+const router = useRouter();
 
-const swiperInstance = ref();
 const meetingCode = ref<string>('');
 const isInputFocused = ref<boolean>(false);
+const meetInfoModal = ref<boolean>(false);
+const laterMeetingCode = ref<string>('');
 
 const slideIndex = ref<number>(0);
-
-function onSwiper(instance) {
-  swiperInstance.value = instance;
-}
-const router = useRouter();
 
 const slides = [
   {
@@ -38,12 +37,24 @@ function onInstantMeet() {
   console.log('instant');
 }
 
-function onLaterMeet() {
-  console.log('later');
+async function onLaterMeet() {
+  const { meetId } = await requestNewMeet();
+  const currentUrl = window.location.href;
+
+  laterMeetingCode.value = currentUrl + meetId;
+
+  meetInfoModal.value = true;
+}
+
+function requestNewMeet(): Promise<NewMeetAck> {
+  return new Promise((resolve) => {
+    const event: MeetEvent = 'new-meet';
+    socket.emit(event, undefined, (ack: NewMeetAck) => resolve(ack));
+  });
 }
 
 function onJoin() {
-  router.push({ name: 'room', params: { roomId: meetingCode.value } });
+  router.push({ name: 'meet', params: { meetId: meetingCode.value } });
 }
 
 function onUpdateFocuse(isFocuesd: boolean) {
@@ -60,16 +71,12 @@ function onSlidePrev() {
     slideIndex.value--;
   }
 }
-
-// function onSlideNext() {
-//   swiperInstance.value.slideNext();
-// }
-// function onSlidePrev() {
-//   swiperInstance.value.slidePrev();
-// }
 </script>
 
 <template>
+  <v-dialog v-model="meetInfoModal">
+    <MeetInfoCard v-model="meetInfoModal" :meet-code="laterMeetingCode" />
+  </v-dialog>
   <XyzTransition appear duration="auto">
     <v-row class="h-100" justify="space-between">
       <v-col class="d-flex flex-column justify-center" cols="12" md="7" lg="5">

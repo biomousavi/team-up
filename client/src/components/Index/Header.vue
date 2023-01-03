@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import { mdiCogOutline, mdiMessageAlertOutline, mdiHelpCircleOutline } from '@mdi/js';
-const date = ref<Date>(new Date());
+import { useMeetStore } from '@/stores/meet';
 
-let interval;
-onMounted(() => {
-  interval = setInterval(() => (date.value = new Date()), 60000);
-});
-onUnmounted(() => clearInterval(interval));
+const meet = useMeetStore();
 
 function onSettings() {
   console.log('aaaaaa');
@@ -58,7 +54,7 @@ function onSettings() {
 
         <p class="text-secondary mx-2 xyz-nested">
           {{
-            date.toLocaleTimeString([], {
+            meet.date.toLocaleTimeString([], {
               hour: '2-digit',
               minute: '2-digit',
               weekday: 'short',

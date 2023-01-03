@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@animxyz/vue3": "^0.6.7",
+    "@vueuse/core": "^9.9.0",
     "pinia": "^2.0.26",
     "socket.io-client": "^4.5.4",
     "swiper": "^8.4.5",
