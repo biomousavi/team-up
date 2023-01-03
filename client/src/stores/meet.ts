@@ -6,9 +6,7 @@ export const useMeetStore = defineStore('meet', () => {
   // update Date object every minute
   const dateInterval = setInterval(() => (date.value = new Date()), 60000);
 
-  // to avoid showing connection error alert before start connecting
-  // we will update the state when we get connection error event
-  const connected = ref<boolean>(true);
+  const alertMessage = ref<string | null>();
 
-  return { date, dateInterval, connected };
+  return { date, dateInterval, alertMessage };
 });

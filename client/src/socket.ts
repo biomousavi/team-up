@@ -10,13 +10,13 @@ const socket = io(import.meta.env.VITE_SERVER_URL, {
 // update connection state on connect to server
 socket.on('connect', () => {
   const meet = useMeetStore();
-  meet.connected = true;
+  meet.alertMessage = null;
 });
 
 // catch connection error event
 // when server is down
 socket.on('connect_error', () => {
   const meet = useMeetStore();
-  meet.connected = false;
+  meet.alertMessage = "ERR_CONNECTION_REFUSED: We can't connect to server.";
 });
 export default socket;

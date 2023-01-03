@@ -74,7 +74,7 @@ export class AppService {
     // server.in(roomId).emit(RoomEvents.PARTICIPANTS, payload);
   }
 
-  async createNewMeet(client: Socket): Promise<NewMeetAck> {
+  async createNewMeet(): Promise<NewMeetAck> {
     // cache changes
     // changes.set(payload.roomId, payload);
     // // send the code changes to other participants

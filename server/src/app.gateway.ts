@@ -20,8 +20,8 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage<MeetEvent>('new-meet')
-  createNewMeet(client: Socket): Promise<NewMeetAck> {
-    return this.appService.createNewMeet(client);
+  createNewMeet(): Promise<NewMeetAck> {
+    return this.appService.createNewMeet();
   }
 
   handleDisconnect(client: Socket) {
