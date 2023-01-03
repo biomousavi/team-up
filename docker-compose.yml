@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  client:
+    build:
+      context: ./client
+      target: development # specify target stage in Dockerfile
+      dockerfile: ./Dockerfile
+    container_name: team-up-client
+    restart: unless-stopped
+    environment:
+      # passing env to container
+      - VITE_SERVER_PORT=${VITE_SERVER_PORT}
+      - VITE_SERVER_URL=${VITE_SERVER_URL}
+    ports:
+      # map host port to container port
+      - ${VITE_SERVER_PORT}:${VITE_SERVER_PORT}
+    volumes:
+      - ./client/src:/usr/src/client/src # map directory to container for hot reloading
+      - /usr/src/client/node_modules # map node_modules directory
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ./server
+      target: development # specify target stage in Dockerfile
+      dockerfile: ./Dockerfile
+    container_name: team-up-server
+    restart: unless-stopped
+    environment:
+      # passing env to container
+      - SERVER_PORT=${SERVER_PORT}
+    ports:
+      # map host port to container port
+      - ${SERVER_PORT}:${SERVER_PORT}
+    volumes:
+      - ./server/src:/usr/src/server/src # map directory to container for hot reloading
+      - /usr/src/server/node_modules # map node_modules directory
