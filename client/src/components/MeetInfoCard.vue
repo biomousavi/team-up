@@ -1,3 +1,23 @@
+<script setup lang="ts">
+import { mdiClose, mdiContentCopy } from '@mdi/js';
+
+defineEmits(['update:modelValue']);
+const props = defineProps({
+  meetCode: {
+    type: String,
+    required: true,
+  },
+  modelValue: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+function onClickCopy(): void {
+  navigator.clipboard.writeText(props.meetCode);
+}
+</script>
+
 <template>
   <v-card class="rounded-lg align-self-center" max-width="320px">
     <v-card-title class="d-flex align-center justify-space-between">
@@ -39,23 +59,3 @@
     </v-card-text>
   </v-card>
 </template>
-
-<script setup lang="ts">
-import { mdiClose, mdiContentCopy } from '@mdi/js';
-
-defineEmits(['update:modelValue']);
-const props = defineProps({
-  meetCode: {
-    type: String,
-    required: true,
-  },
-  modelValue: {
-    type: Boolean,
-    default: false,
-  },
-});
-
-function onClickCopy(): void {
-  navigator.clipboard.writeText(props.meetCode);
-}
-</script>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import IndexHeader from '@/components/Index/Header.vue';
-import IndexShowcase from '@/components/Index/Showcase.vue';
+import IndexHeader from '@/components/Header.vue';
+import IndexShowcase from '@/components/Showcase.vue';
 </script>
 
 <template>

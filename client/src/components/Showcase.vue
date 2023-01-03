@@ -5,7 +5,7 @@ import { ref } from 'vue';
 import { mdiVideoPlusOutline, mdiLink, mdiPlus, mdiChevronRight, mdiChevronLeft } from '@mdi/js';
 import socket from '@/socket';
 import type { MeetEvent, NewMeetAck } from '@/types';
-import MeetInfoCard from '../MeetInfoCard.vue';
+import MeetInfoCard from './MeetInfoCard.vue';
 const router = useRouter();
 
 const meetingCode = ref<string>('');
@@ -33,16 +33,18 @@ const slides = [
   },
 ];
 
-function onInstantMeet() {
-  console.log('instant');
+async function onInstantMeet() {
+  const { meetId } = await requestNewMeet();
+
+  // navigate user to created meet
+  router.push({ name: 'meet', params: { meetId } });
 }
 
 async function onLaterMeet() {
-  const { meetId } = await requestNewMeet();
   const currentUrl = window.location.href;
+  const { meetId } = await requestNewMeet();
 
   laterMeetingCode.value = currentUrl + meetId;
-
   meetInfoModal.value = true;
 }
 
