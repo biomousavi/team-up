@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
 
 export const useUserStore = defineStore('user', () => {
+  const id = ref<string | null>(null);
   const name = useLocalStorage<string | null>('store/user/name', null);
   const email = useLocalStorage<string | null>('store/user/email', null);
 
@@ -10,5 +11,5 @@ export const useUserStore = defineStore('user', () => {
     return name.value && email.value ? true : false;
   });
 
-  return { name, email, validCredentials };
+  return { id, name, email, validCredentials };
 });
