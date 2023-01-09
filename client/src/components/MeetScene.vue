@@ -1,24 +1,50 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed, onMounted, onUnmounted, watch } from 'vue';
+import { useMeetStore } from '@/stores/meet';
+import VideoStream from './VideoStream.vue';
+import { useUserStore } from '@/stores/user';
+
+const meet = useMeetStore();
+const user = useUserStore();
+
+const sceneColumns = computed(() => {
+  const meetingUsers = meet.users.length;
+  const root = Math.floor(Math.sqrt(meetingUsers));
+  return `repeat(${Math.ceil(meetingUsers / root)}, 1fr)`;
+});
+
+// onMounted(setStream);
+// onUnmounted(meet.stopStrams);
+// watch(() => meet.localStream, setStream, { immediate: true });
+
+// function setStream() {
+//   const videos = document.getElementsByTagName('video');
+//   Array.from(videos).forEach((video) => (video.srcObject = meet.localStream));
+// }
+</script>
 
 <template>
   <div class="scene">
-    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero esse eveniet saepe voluptate aut
-    ipsum voluptas cum labore quia molestias cumque eius, explicabo facilis delectus, quaerat, neque id?
-    Quo porro temporibus explicabo facilis nemo inventore culpa itaque laborum, rem consequatur.
-    Quibusdam, dolorum eum nemo illo debitis ipsa officiis expedita ullam.
+    <!-- local stream -->
+    <VideoStream v-if="meet.localStream" :data="{name:user.name!, stream:meet.localStream}" />
+
+    <!-- remote streams -->
+    <template v-for="user of meet.users" :key="user.id">
+      <VideoStream v-if="user.mediaStream" :data="{name:user.name!, stream: user.mediaStream}" />
+    </template>
   </div>
 </template>
 
 <style scoped>
 .scene {
+  width: 100%;
+  display: grid;
+  gap: 5px;
+  grid-template-columns: v-bind(sceneColumns);
   transition-duration: 0.6s;
   transition-delay: 0.1s;
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.scene {
-  width: 100%;
 }
 
 .chat-on .scene {
