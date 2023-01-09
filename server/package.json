@@ -44,6 +44,7 @@
     "@types/jest": "28.1.8",
     "@types/node": "^16.0.0",
     "@types/reflect-metadata": "^0.1.0",
+    "@types/simple-peer": "^9.11.5",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^8.0.1",

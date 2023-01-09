@@ -5,7 +5,6 @@ import { AppService } from './app.service';
 import { validateEnv } from './env.validation';
 
 @Module({
-  controllers: [],
   providers: [AppService, AppGateway],
   imports: [ConfigModule.forRoot({ validate: validateEnv })],
 })

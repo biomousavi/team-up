@@ -1,10 +1,27 @@
-import type { Socket } from 'socket.io';
+import type { SignalData } from 'simple-peer';
+
+export interface User {
+  id: string;
+  name?: string;
+  email?: string;
+  signalData?: SignalData;
+  mediaId?: string; // to track which mediaStream is for which user
+  mediaStream?: MediaStream;
+}
+
+export interface SignalPayload {
+  user: User;
+  data: SignalData;
+}
 
 export interface JoinPayload {
   name: string;
   email: string;
-  meetId: string;
+  meetId?: string;
+  mediaId?: string; // to track which mediaStream is for which user
+  signalData?: SignalData;
 }
+
 export interface NewMeetAck {
   meetId: string;
 }
@@ -15,23 +32,21 @@ export interface ParticipantsPayload {
 
 export interface JoinAck {
   status: 'ok' | 'error';
-  message: string;
-  // TODO:
+  message?: string;
+  users?: User[];
 }
 
-export type MeetEvent = 'join' | 'left' | 'new-meet';
+export type ReservedEvent =
+  | 'connect'
+  | 'connect_error'
+  | 'disconnect'
+  | 'disconnecting'
+  | 'newListener'
+  | 'removeListener';
 
-export interface MeetEvents {
-  [key: string]: MeetEvent;
-}
-
-export interface SocketData {
-  name?: string;
-  email?: string;
-}
+export type MeetEvent = 'join' | 'left' | 'new-meet' | 'signal' | 'init-peer';
 
 export interface Meet {
   id: string;
+  users: User[];
 }
-
-export type ClientSocket = Socket<MeetEvents, MeetEvents, undefined, SocketData>;
