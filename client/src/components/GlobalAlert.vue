@@ -5,9 +5,14 @@ const meet = useMeetStore();
 </script>
 
 <template>
-  <div v-if="meet.alertMessage">
-    <v-alert variant="flat" color="red" rounded="0">
-      <pre class="rubik">{{ meet.alertMessage }}</pre>
-    </v-alert>
-  </div>
+  <v-alert
+    style="z-index: 2400; display: block"
+    position="absolute"
+    v-if="meet.alertMessage"
+    variant="flat"
+    color="red"
+    rounded="0"
+  >
+    <h4 class="rubik">{{ meet.alertMessage }}</h4>
+  </v-alert>
 </template>

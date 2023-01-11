@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { User } from '@/types';
-import { computed, ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 
 interface VideoStream {
   name: string;
