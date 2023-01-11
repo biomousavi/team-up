@@ -85,12 +85,12 @@ function onSlidePrev() {
         <div>
           <div xyz="big fade stagger">
             <h1
-              style="line-height: 125%"
+              style="line-height: 135%"
               class="xyz-nested font-weight-bold text-h5 text-sm-h4 text-md-h4 text-xl-h2 rubik"
             >
               Premium video meetings.
               <br />
-              Now free for everyone.
+              Now free <span class="bg-primary rounded-lg px-2">for everyone.</span>
             </h1>
 
             <p class="xyz-nested text-secondary text-body mt-6 rubik">
