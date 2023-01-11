@@ -11,17 +11,12 @@ const user = useUserStore();
 const sceneColumns = computed(() => {
   const meetingUsers = meet.users.length;
   const root = Math.floor(Math.sqrt(meetingUsers));
-  return `repeat(${Math.ceil(meetingUsers / root)}, 1fr)`;
+
+  let column: number = 1;
+  if (meetingUsers > 1) column = Math.ceil(meetingUsers / root);
+
+  return `repeat(${column}, 1fr)`;
 });
-
-// onMounted(setStream);
-// onUnmounted(meet.stopStrams);
-// watch(() => meet.localStream, setStream, { immediate: true });
-
-// function setStream() {
-//   const videos = document.getElementsByTagName('video');
-//   Array.from(videos).forEach((video) => (video.srcObject = meet.localStream));
-// }
 </script>
 
 <template>
