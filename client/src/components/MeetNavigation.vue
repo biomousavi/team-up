@@ -51,10 +51,10 @@ function onToggleChat() {
 <template>
   <div
     v-if="meet.showNavigation"
-    class="navigation d-flex flex-column-reverse flex-wrap justify-space-between align-center ma-3"
+    class="navigation d-flex flex-column-reverse flex-md-row flex-wrap justify-space-between align-center ma-3"
   >
     <!-- left section -->
-    <div class="text-white d-flex justify-space-between w-100">
+    <div class="text-white d-flex justify-space-between">
       <span>
         {{ meet.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
       </span>
@@ -63,7 +63,7 @@ function onToggleChat() {
     </div>
 
     <!-- center section -->
-    <div class="d-flex justify-space-between my-4 w-100 align-center">
+    <div class="d-flex justify-space-between my-4 align-center">
       <v-tooltip location="top center" text="Toggle Microphone">
         <template v-slot:activator="{ props }">
           <v-btn
@@ -121,7 +121,7 @@ function onToggleChat() {
     </div>
 
     <!-- right section -->
-    <div class="d-flex justify-space-between w-100">
+    <div class="d-flex justify-space-between">
       <v-tooltip location="top center" text="Details">
         <template v-slot:activator="{ props }">
           <v-btn
@@ -152,6 +152,12 @@ function onToggleChat() {
 <style scoped>
 .leave-call-icon {
   width: 80px;
+}
+
+@media only screen and (max-width: 960px) {
+  .navigation > div {
+    width: 100%;
+  }
 }
 
 .navigation {

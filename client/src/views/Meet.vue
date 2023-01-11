@@ -5,12 +5,15 @@ import { useUserStore } from '@/stores/user';
 import { useMeetStore } from '@/stores/meet';
 import ErrorModal from '@/components/ErrorModal.vue';
 import CredentialsModal from '@/components/CredentialsModal.vue';
-import MeetChat from '@/components/MeetChat.vue';
 import MeetScene from '@/components/MeetScene.vue';
+import ChatBottomsheet from '@/components/ChatBottomsheet.vue';
+import ChatSidebar from '@/components/ChatSidebar.vue';
+import { useDisplay } from 'vuetify/lib/framework.mjs';
 
 const route = useRoute();
 const user = useUserStore();
 const meet = useMeetStore();
+const display = useDisplay();
 
 onMounted(initMeeting);
 
@@ -38,7 +41,9 @@ function onSaveCredentials() {
     <CredentialsModal @save="onSaveCredentials" />
     <div class="container overflow-hidden d-flex h-100 w-100" :class="{ 'chat-on': meet.chatOn }">
       <MeetScene />
-      <MeetChat />
+
+      <ChatBottomsheet v-if="display.smAndDown.value" />
+      <ChatSidebar v-else />
     </div>
   </main>
 </template>

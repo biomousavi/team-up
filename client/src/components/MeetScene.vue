@@ -39,7 +39,9 @@ const sceneLayout = computed(() => {
 });
 
 function onToggleNavigation() {
-  meet.showNavigation = !meet.showNavigation;
+  if (display.smAndDown.value) {
+    meet.showNavigation = !meet.showNavigation;
+  }
 }
 </script>
 
@@ -81,5 +83,11 @@ function onToggleNavigation() {
 
 .chat-on .scene {
   width: calc(100% - 400px);
+}
+
+@media only screen and (max-width: 960px) {
+  .chat-on .scene {
+    width: 100%;
+  }
 }
 </style>
