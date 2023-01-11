@@ -16,6 +16,7 @@ export const useMeetStore = defineStore('meet', () => {
   const handRaised = ref<boolean>(false);
   const micOn = ref<boolean>(true);
   const camOn = ref<boolean>(true);
+  const showNavigation = ref<boolean>(true);
 
   const date = ref<Date>(new Date());
   // update Date object every minute
@@ -226,5 +227,6 @@ export const useMeetStore = defineStore('meet', () => {
     camOn,
     toggleCamera,
     toggleMicrophone,
+    showNavigation,
   };
 });

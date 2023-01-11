@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { mdiCogOutline, mdiMessageAlertOutline, mdiHelpCircleOutline } from '@mdi/js';
 import { useMeetStore } from '@/stores/meet';
 
@@ -12,7 +11,7 @@ function onSettings() {
 
 <template>
   <XyzTransition appear duration="auto">
-    <header class="d-flex justify-space-between align-center">
+    <header class="d-flex justify-space-between align-start mb-12 mb-md-0">
       <div class="d-flex align-end" xyz="fade stagger ease-out">
         <img src="/team.png" alt="TeamUp-image" class="xyz-nested" />
         <router-link class="mx-1 text-secondary xyz-nested" to="/"> TeamUp </router-link>

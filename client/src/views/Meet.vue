@@ -36,7 +36,7 @@ function onSaveCredentials() {
   <main class="d-flex flex-column justify-space-between">
     <ErrorModal />
     <CredentialsModal @save="onSaveCredentials" />
-    <div class="container overflow-hidden d-flex h-100" :class="{ 'chat-on': meet.chatOn }">
+    <div class="container overflow-hidden d-flex h-100 w-100" :class="{ 'chat-on': meet.chatOn }">
       <MeetScene />
       <MeetChat />
     </div>

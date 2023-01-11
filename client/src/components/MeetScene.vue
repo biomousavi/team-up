@@ -37,17 +37,17 @@ const sceneLayout = computed(() => {
 
   return gridTemplate;
 });
+
+function onToggleNavigation() {
+  meet.showNavigation = !meet.showNavigation;
+}
 </script>
 
 <template>
-  <XyzTransitionGroup
-    :style="sceneLayout"
-    appear
-    class="scene"
-    xyz="fade small out-down out-rotate-right appear-stagger"
-  >
+  <XyzTransitionGroup :style="sceneLayout" appear class="scene" xyz="fade down appear-stagger">
     <!-- local stream -->
     <VideoStream
+      @click="onToggleNavigation"
       key="local-stream"
       v-if="meet.localStream"
       :data="{name:user.name!, stream:meet.localStream!}"
@@ -56,6 +56,7 @@ const sceneLayout = computed(() => {
     <!-- remote streams -->
     <template v-for="user of meet.users" :key="user.id">
       <VideoStream
+        @click="onToggleNavigation"
         :key="user.id"
         v-if="user.mediaStream"
         :data="{name:user.name!, stream: user.mediaStream}"

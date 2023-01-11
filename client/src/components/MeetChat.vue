@@ -13,7 +13,7 @@ function onToggleChat() {
 </script>
 
 <template>
-  <div class="chat pa-2 h-100">
+  <div v-if="meet.chatOn" class="chat pa-2 h-100">
     <div class="d-flex rounded-lg bg-white w-100 pa-2">
       <div class="d-flex justify-space-between align-center w-100">
         <h2 class="text-body-1 rubik">In-call message</h2>
