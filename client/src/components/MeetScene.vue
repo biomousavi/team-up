@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, watch } from 'vue';
+import { computed, onUnmounted } from 'vue';
 import { useMeetStore } from '@/stores/meet';
 import VideoStream from './VideoStream.vue';
 import { useUserStore } from '@/stores/user';
@@ -7,6 +7,15 @@ import MeetNavigation from '@/components/MeetNavigation.vue';
 
 const meet = useMeetStore();
 const user = useUserStore();
+
+onUnmounted(stopStreams);
+
+function stopStreams() {
+  // stop local stream
+  meet.stopStream(meet.localStream!);
+
+  // stop remote streams
+}
 
 const sceneColumns = computed(() => {
   const meetingUsers = meet.users.length;

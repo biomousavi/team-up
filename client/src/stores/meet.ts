@@ -61,15 +61,15 @@ export const useMeetStore = defineStore('meet', () => {
     } catch (error) {
       showAlert(
         'PERMISSION_ERROR: We neet to access to camera and microphone. ' +
-          'allow permissions and refresh the page',
+          'allow permissions and refresh the page.',
       );
       throw Error('Cant access to local stream.');
     }
   }
 
-  function stopStrams() {
-    localStream.value?.getTracks().forEach((track) => track.stop());
-    localStream.value = null;
+  function stopStream(stream: MediaStream) {
+    stream?.getTracks().forEach((track) => track.stop());
+    // stream = null;
   }
 
   function handlePeerSignal(payload: SignalPayload) {
@@ -158,7 +158,7 @@ export const useMeetStore = defineStore('meet', () => {
 
   return {
     initConnection,
-    stopStrams,
+    stopStream,
     localStream,
     hideError,
     showError,
