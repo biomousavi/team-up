@@ -1,3 +1,4 @@
+import socket from '@/socket';
 import { createRouter, createWebHistory } from 'vue-router';
 import IndexView from '../views/Index.vue';
 import MeetView from '../views/Meet.vue';
@@ -18,4 +19,7 @@ const router = createRouter({
   ],
 });
 
+router.beforeEach(() => {
+  if (!socket.connected) socket.connect();
+});
 export default router;

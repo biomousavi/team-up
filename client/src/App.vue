@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted } from 'vue';
+import { onBeforeUnmount } from 'vue';
 import { RouterView } from 'vue-router';
 import { useDisplay } from 'vuetify';
 import { useMeetStore } from './stores/meet';
@@ -7,10 +7,7 @@ import socket from './socket';
 import GlobalAlert from './components/GlobalAlert.vue';
 
 const display = useDisplay();
-
 const meet = useMeetStore();
-
-onMounted(() => socket.connect());
 
 onBeforeUnmount(() => {
   // terminate socket connection
