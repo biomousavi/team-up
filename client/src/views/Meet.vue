@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useMeetStore } from '@/stores/meet';
 import ErrorModal from '@/components/ErrorModal.vue';
 import CredentialsModal from '@/components/CredentialsModal.vue';
-import MeetNavigation from '@/components/MeetNavigation.vue';
 import MeetChat from '@/components/MeetChat.vue';
 import MeetScene from '@/components/MeetScene.vue';
 
@@ -41,7 +40,6 @@ function onSaveCredentials() {
       <MeetScene />
       <MeetChat />
     </div>
-    <MeetNavigation />
   </main>
 </template>
 

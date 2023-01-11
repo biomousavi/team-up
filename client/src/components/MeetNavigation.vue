@@ -51,7 +51,7 @@ function onToggleChat() {
 </script>
 
 <template>
-  <div class="d-flex justify-space-between align-center ma-3">
+  <div class="navigation d-flex justify-space-between align-center ma-3">
     <!-- left section -->
     <div class="text-white">
       <span>
@@ -120,7 +120,7 @@ function onToggleChat() {
     </div>
 
     <!-- right section -->
-    <div>
+    <div class="mx-2">
       <v-tooltip location="top center" text="Details">
         <template v-slot:activator="{ props }">
           <v-btn
@@ -153,5 +153,11 @@ function onToggleChat() {
 <style scoped>
 .leave-call-icon {
   width: 80px;
+}
+
+.navigation {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 </style>

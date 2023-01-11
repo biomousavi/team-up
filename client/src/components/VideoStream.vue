@@ -12,7 +12,6 @@ const props = defineProps<{ data: VideoStream }>();
 const video = ref<HTMLVideoElement>();
 
 onMounted(setStram);
-// watch(props.data, setStram, { immediate: true });
 
 function setStram() {
   video.value!.srcObject = props.data.stream;

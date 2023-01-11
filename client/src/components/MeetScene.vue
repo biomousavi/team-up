@@ -3,6 +3,7 @@ import { computed, onMounted, onUnmounted, watch } from 'vue';
 import { useMeetStore } from '@/stores/meet';
 import VideoStream from './VideoStream.vue';
 import { useUserStore } from '@/stores/user';
+import MeetNavigation from '@/components/MeetNavigation.vue';
 
 const meet = useMeetStore();
 const user = useUserStore();
@@ -32,11 +33,14 @@ const sceneColumns = computed(() => {
     <template v-for="user of meet.users" :key="user.id">
       <VideoStream v-if="user.mediaStream" :data="{name:user.name!, stream: user.mediaStream}" />
     </template>
+
+    <MeetNavigation />
   </div>
 </template>
 
 <style scoped>
 .scene {
+  position: relative;
   width: 100%;
   display: grid;
   gap: 5px;
