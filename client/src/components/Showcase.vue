@@ -6,6 +6,7 @@ import { mdiVideoPlusOutline, mdiLink, mdiPlus, mdiChevronRight, mdiChevronLeft 
 import socket from '@/socket';
 import type { MeetEvent, NewMeetAck } from '@/types';
 import MeetInfoCard from './MeetInfoCard.vue';
+import isUrl from 'is-url';
 const router = useRouter();
 
 const meetingCode = ref<string>('');
@@ -56,7 +57,11 @@ function requestNewMeet(): Promise<NewMeetAck> {
 }
 
 function onJoin() {
-  router.push({ name: 'meet', params: { meetId: meetingCode.value } });
+  if (isUrl(meetingCode.value)) {
+    window.location.href = meetingCode.value;
+  } else {
+    router.push({ name: 'meet', params: { meetId: meetingCode.value } });
+  }
 }
 
 function onUpdateFocuse(isFocuesd: boolean) {

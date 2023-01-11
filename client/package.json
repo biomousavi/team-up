@@ -16,6 +16,7 @@
   "dependencies": {
     "@animxyz/vue3": "^0.6.7",
     "@vueuse/core": "^9.9.0",
+    "is-url": "^1.2.4",
     "pinia": "^2.0.26",
     "simple-peer": "^9.11.1",
     "socket.io-client": "^4.5.4",

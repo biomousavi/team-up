@@ -100,8 +100,14 @@ export const useMeetStore = defineStore('meet', () => {
     // remove all remote users
     users.value.forEach((user) => removeUser(user.id));
 
-    // close socket connection
-    socket.close();
+    // leave the socket room
+    socket.emit<MeetEvent>('left', meetId.value);
+
+    // reset states
+    micOn.value = true;
+    camOn.value = true;
+    localStream.value = null;
+    peers.value = {};
   }
 
   function stopStream(stream: MediaStream) {

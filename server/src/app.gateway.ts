@@ -18,6 +18,10 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   joinTheMeet(client: Socket, payload: JoinPayload): Promise<JoinAck> {
     return this.appService.join(client, payload);
   }
+  @SubscribeMessage<MeetEvent>('left')
+  leftTheMeet(client: Socket, payload: string): Promise<void> {
+    return this.appService.left(client, payload);
+  }
 
   @SubscribeMessage<MeetEvent>('new-meet')
   createNewMeet(): Promise<NewMeetAck> {

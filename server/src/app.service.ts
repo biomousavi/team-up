@@ -26,6 +26,16 @@ export class AppService {
     }
   }
 
+  async left(client: Socket, meetId: string): Promise<void> {
+    if (client.rooms.has(meetId)) {
+      await client.leave(meetId);
+    }
+    // informing other users of joining a new user
+    client.to(meetId).emit<MeetEvent>('left', { id: client.id });
+
+    this.removeUser(meetId, { id: client.id });
+  }
+
   async join(client: Socket, payload: JoinPayload): Promise<JoinAck> {
     try {
       const { meetId, email, name } = payload;
@@ -48,8 +58,7 @@ export class AppService {
 
       // notify other users when someone left the room
       client.on('disconnect', () => {
-        client.to(payload.meetId).emit<MeetEvent>('left', user);
-        this.removeUser(meetId, user);
+        this.left(client, meetId);
       });
 
       const users = meetsCache.get(meetId).users;
