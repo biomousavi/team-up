@@ -99,6 +99,9 @@ export const useMeetStore = defineStore('meet', () => {
 
     // remove all remote users
     users.value.forEach((user) => removeUser(user.id));
+
+    // close socket connection
+    socket.close();
   }
 
   function stopStream(stream: MediaStream) {

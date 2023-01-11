@@ -103,7 +103,7 @@ function onToggleChat() {
       <v-tooltip location="top center" text="Leave Call">
         <template v-slot:activator="{ props }">
           <div class="leave-call-icon mx-2">
-            <v-btn color="red" rounded="pill" block v-bind="props">
+            <v-btn color="red" to="/" @click="meet.leaveRoom" rounded="pill" block v-bind="props">
               <v-icon size="x-large" :icon="mdiPhoneHangup"></v-icon>
             </v-btn>
           </div>
