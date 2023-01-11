@@ -23,7 +23,8 @@
     "vite-plugin-vuetify": "^1.0.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
-    "vuetify": "^3.0.4"
+    "vuetify": "^3.0.4",
+    "webrtc-adapter": "^8.2.0"
   },
   "devDependencies": {
     "@mdi/js": "^7.0.96",
