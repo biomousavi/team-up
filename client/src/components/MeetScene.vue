@@ -8,30 +8,27 @@ import MeetNavigation from '@/components/MeetNavigation.vue';
 const meet = useMeetStore();
 const user = useUserStore();
 
-onUnmounted(stopStreams);
+onUnmounted(meet.leaveRoom);
 
-function stopStreams() {
-  // stop local stream
-  meet.stopStream(meet.localStream!);
-
-  // stop remote streams
-}
-
-const sceneColumns = computed(() => {
+const sceneFraction = computed(() => {
   const meetingUsers = meet.users.length;
-  const root = Math.floor(Math.sqrt(meetingUsers));
+  let root = Math.floor(Math.sqrt(meetingUsers));
 
-  let column: number = 1;
-  if (meetingUsers > 1) column = Math.ceil(meetingUsers / root);
+  if (meetingUsers % 2) {
+    root = Math.ceil(Math.cbrt(meetingUsers));
+  }
 
-  return `repeat(${column}, 1fr)`;
+  let fraction: number = 1;
+  if (meetingUsers > 1) fraction = Math.ceil(meetingUsers / root);
+
+  return `repeat(${fraction}, 1fr)`;
 });
 </script>
 
 <template>
   <div class="scene">
     <!-- local stream -->
-    <VideoStream v-if="meet.localStream" :data="{name:user.name!, stream:meet.localStream}" />
+    <VideoStream v-if="meet.localStream" :data="{name:user.name!, stream:meet.localStream!}" />
 
     <!-- remote streams -->
     <template v-for="user of meet.users" :key="user.id">
@@ -48,7 +45,7 @@ const sceneColumns = computed(() => {
   width: 100%;
   display: grid;
   gap: 5px;
-  grid-template-columns: v-bind(sceneColumns);
+  grid-template-columns: v-bind(sceneFraction);
   transition-duration: 0.6s;
   transition-delay: 0.1s;
   transition-property: all;

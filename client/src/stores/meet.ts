@@ -48,6 +48,10 @@ export const useMeetStore = defineStore('meet', () => {
     if (!userExists) users.value.push(newUser);
   }
   function removeUser(id: string) {
+    // destroy remote peer
+    if (peers.value[id]) peers.value[id].destroy();
+
+    // remove user from users array
     users.value = users.value.filter((user) => user.id !== id);
   }
 
@@ -67,9 +71,16 @@ export const useMeetStore = defineStore('meet', () => {
     }
   }
 
+  function leaveRoom() {
+    // stop local stream
+    stopStream(localStream.value!);
+
+    // remove all remote users
+    users.value.forEach((user) => removeUser(user.id));
+  }
+
   function stopStream(stream: MediaStream) {
     stream?.getTracks().forEach((track) => track.stop());
-    // stream = null;
   }
 
   function handlePeerSignal(payload: SignalPayload) {
@@ -178,5 +189,6 @@ export const useMeetStore = defineStore('meet', () => {
     createPeerConn,
     handlePeerSignal,
     initPeer,
+    leaveRoom,
   };
 });
