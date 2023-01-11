@@ -14,7 +14,6 @@ onMounted(setStram);
 
 function setStram() {
   video.value!.srcObject = props.data.stream;
-  video.value!.muted = true;
   video.value!.autoplay = true;
   video.value!.playsInline = true;
 

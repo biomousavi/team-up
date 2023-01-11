@@ -13,10 +13,16 @@ export const useMeetStore = defineStore('meet', () => {
 
   // Meet Chat
   const chatOn = ref<boolean>(false);
+  const handRaised = ref<boolean>(false);
+  const micOn = ref<boolean>(true);
+  const camOn = ref<boolean>(true);
 
   const date = ref<Date>(new Date());
   // update Date object every minute
   const dateInterval = setInterval(() => (date.value = new Date()), 60000);
+
+  const localStream = ref<MediaStream | null>(null);
+  const peers = ref<{ [key: string]: SimplePeer.Instance }>({});
 
   const alertMessage = ref<string | null>();
   const hideAlert = () => (alertMessage.value = null);
@@ -49,14 +55,14 @@ export const useMeetStore = defineStore('meet', () => {
   }
   function removeUser(id: string) {
     // destroy remote peer
-    if (peers.value[id]) peers.value[id].destroy();
+    if (peers.value[id]) {
+      peers.value[id].destroy();
+      delete peers.value[id];
+    }
 
     // remove user from users array
     users.value = users.value.filter((user) => user.id !== id);
   }
-
-  const localStream = ref<MediaStream | null>(null);
-  const peers = ref<{ [key: string]: SimplePeer.Instance }>({});
 
   async function getUserMediaPermission() {
     try {
@@ -69,6 +75,22 @@ export const useMeetStore = defineStore('meet', () => {
       );
       throw Error('Cant access to local stream.');
     }
+  }
+
+  function toggleCamera() {
+    camOn.value = !camOn.value;
+
+    localStream.value?.getVideoTracks().forEach((video) => {
+      video.enabled = camOn.value;
+    });
+  }
+
+  function toggleMicrophone() {
+    micOn.value = !micOn.value;
+
+    localStream.value?.getAudioTracks().forEach((audio) => {
+      audio.enabled = micOn.value;
+    });
   }
 
   function leaveRoom() {
@@ -190,5 +212,10 @@ export const useMeetStore = defineStore('meet', () => {
     handlePeerSignal,
     initPeer,
     leaveRoom,
+    handRaised,
+    micOn,
+    camOn,
+    toggleCamera,
+    toggleMicrophone,
   };
 });

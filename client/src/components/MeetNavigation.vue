@@ -15,31 +15,29 @@ import { useMeetStore } from '@/stores/meet';
 
 const meet = useMeetStore();
 
-const handRaised = ref<boolean>(false);
 const handColor = ref<'white' | 'primary'>('white');
 
-const micOn = ref<boolean>(true);
 const micIcon = ref<string>(mdiMicrophone);
 const micColor = ref<'white' | 'red'>('white');
 
-const camOn = ref<boolean>(true);
 const camIcon = ref<string>(mdiVideoOutline);
 const camColor = ref<'white' | 'red'>('white');
 
 function onToggleHand() {
-  handRaised.value = !handRaised.value;
+  meet.handRaised = !meet.handRaised;
   handColor.value = handColor.value === 'white' ? 'primary' : 'white';
 }
 
 function onToggleCam() {
-  camOn.value = !camOn.value;
-  camIcon.value = camOn.value ? mdiVideoOutline : mdiVideoOffOutline;
+  meet.toggleCamera();
+
+  camIcon.value = meet.camOn ? mdiVideoOutline : mdiVideoOffOutline;
   camColor.value = camColor.value === 'red' ? 'white' : 'red';
 }
 
 function onToggleMic() {
-  micOn.value = !micOn.value;
-  micIcon.value = micOn.value ? mdiMicrophone : mdiMicrophoneOff;
+  meet.toggleMicrophone();
+  micIcon.value = meet.micOn ? mdiMicrophone : mdiMicrophoneOff;
   micColor.value = micColor.value === 'red' ? 'white' : 'red';
 }
 
