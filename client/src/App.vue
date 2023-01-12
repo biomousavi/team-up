@@ -10,6 +10,8 @@ const display = useDisplay();
 
 const meet = useMeetStore();
 
+const isDev = import.meta.env.DEV;
+
 onMounted(() => socket.connect());
 
 onBeforeUnmount(() => {
@@ -21,7 +23,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div v-if="import.meta.env.DEV">{{ display.name }}</div>
+  <div v-if="isDev">{{ display.name }}</div>
   <v-app style="min-height: 100vh">
     <GlobalAlert />
     <RouterView v-slot="{ Component }">

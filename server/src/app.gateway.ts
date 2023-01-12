@@ -9,7 +9,7 @@ import { Socket, Server } from 'socket.io';
 import { AppService } from './app.service';
 import { JoinAck, JoinPayload, MeetEvent, NewMeetAck, SignalPayload, User } from './types';
 
-@WebSocketGateway({ cors: { origin: '*' }, serveClient: false, path: '/socket' })
+@WebSocketGateway({ cors: { origin: '*' }, serveClient: false, path: '/' })
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(private appService: AppService) {}
   @WebSocketServer() server: Server;
@@ -38,10 +38,10 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   handleDisconnect(client: Socket) {
-    console.log('a client connected');
+    console.log('a client connected', client.id);
   }
 
   handleConnection(client: Socket, ...args: any[]) {
-    console.log('a client disconnected');
+    console.log('a client disconnected', client.id);
   }
 }
