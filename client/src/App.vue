@@ -18,7 +18,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   // terminate socket connection
-  // socket.disconnect();
+  socket.disconnect();
   // remove date interval
   clearInterval(meet.dateInterval);
 });

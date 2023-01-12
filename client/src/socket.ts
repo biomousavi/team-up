@@ -7,8 +7,6 @@ import type { ReservedEvent, MeetEvent, User, SignalPayload } from './types';
 const socket = io(import.meta.env.VITE_SERVER_URL, {
   autoConnect: false,
   reconnection: true,
-  transports: ['websocket'],
-  secure: true,
   path: '/',
 });
 
@@ -22,9 +20,10 @@ socket.on<ReservedEvent>('connect', () => {
 });
 
 // catch connection error event, when server is down
-socket.on<ReservedEvent>('connect_error', () => {
+socket.on<ReservedEvent>('connect_error', (error) => {
   const meet = useMeetStore();
   meet.alertMessage = "ERR_CONNECTION_REFUSED: We can't connect to server.";
+  console.log(error);
 });
 
 socket.on<MeetEvent>('join', (payload: User) => {
