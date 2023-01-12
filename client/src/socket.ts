@@ -7,6 +7,8 @@ import type { ReservedEvent, MeetEvent, User, SignalPayload } from './types';
 const socket = io(import.meta.env.VITE_SERVER_URL, {
   autoConnect: false,
   reconnection: true,
+  transports: ['websocket', 'polling'],
+  secure: true,
   path: '/',
 });
 
