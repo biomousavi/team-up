@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { fastifyHelmet } from '@fastify/helmet';
-import { IoAdapter } from '@nestjs/platform-socket.io';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 
 async function bootstrap() {
@@ -16,8 +15,6 @@ async function bootstrap() {
       disableRequestLogging: true,
     }),
   );
-
-  app.useWebSocketAdapter(new IoAdapter(app));
 
   const configService: ConfigService = app.get(ConfigService);
 
