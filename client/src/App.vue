@@ -21,7 +21,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div>{{ display.name }}</div>
+  <div v-if="import.meta.env.DEV">{{ display.name }}</div>
   <v-app style="min-height: 100vh">
     <GlobalAlert />
     <RouterView v-slot="{ Component }">
