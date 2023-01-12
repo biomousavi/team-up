@@ -12,11 +12,13 @@ const meet = useMeetStore();
 
 const isDev = import.meta.env.DEV;
 
-onMounted(() => socket.connect());
+onMounted(() => {
+  socket.connect();
+});
 
 onBeforeUnmount(() => {
   // terminate socket connection
-  socket.disconnect();
+  // socket.disconnect();
   // remove date interval
   clearInterval(meet.dateInterval);
 });
