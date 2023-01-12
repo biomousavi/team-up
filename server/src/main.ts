@@ -16,23 +16,11 @@ async function bootstrap() {
     }),
   );
 
-  // await app.register(fastifyExpress);
-
-  // const signalingPath = '/signal';
-
-  // app.use(signalingPath, (req, res) => {
-  //   console.log('asdas');
-  //   peerServer(req, res);
-  // });
-  // app.getHttpAdapter().use(signalingPath, peerServer);
-
   const configService: ConfigService = app.get(ConfigService);
 
   await app.register(fastifyCors, { credentials: true, origin: '*' });
   await app.register(fastifyHelmet, { contentSecurityPolicy: false });
-  const server = await app.listen(configService.get<number>('SERVER_PORT'), '0.0.0.0');
-
-  // const peerServer = PeerServer({ path: signalingPath });
+  await app.listen(configService.get<number>('SERVER_PORT'), '0.0.0.0');
 
   console.log(`server is running on: ${await app.getUrl()}`);
 }
