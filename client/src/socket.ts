@@ -2,7 +2,7 @@ import { io } from 'socket.io-client';
 import { useMeetStore } from './stores/meet';
 import { useUserStore } from './stores/user';
 
-import type { ReservedEvent, MeetEvent, User, SignalPayload } from './types';
+import type { ReservedEvent, MeetEvent, User, SignalPayload, Message } from './types';
 
 const socket = io(import.meta.env.VITE_SERVER_URL, {
   path: '/socket',
@@ -33,6 +33,15 @@ socket.on<MeetEvent>('join', (payload: User) => {
   meet.createPeerConn(payload, false);
 });
 
+socket.on<MeetEvent>('left', (payload: User) => {
+  const meet = useMeetStore();
+  meet.removeUser(payload.id);
+});
+
+socket.on<MeetEvent>('message', (payload: Message) => {
+  // TODO
+});
+
 socket.on<MeetEvent>('signal', (payload: SignalPayload) => {
   const meet = useMeetStore();
   meet.handlePeerSignal(payload);
@@ -41,11 +50,6 @@ socket.on<MeetEvent>('signal', (payload: SignalPayload) => {
 socket.on<MeetEvent>('init-peer', (payload: User) => {
   const meet = useMeetStore();
   meet.createPeerConn(payload, true);
-});
-
-socket.on<MeetEvent>('left', (payload: User) => {
-  const meet = useMeetStore();
-  meet.removeUser(payload.id);
 });
 
 export default socket;

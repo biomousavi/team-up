@@ -1,7 +1,16 @@
 import { nanoid } from 'nanoid';
 import { Socket } from 'socket.io';
 import { Injectable } from '@nestjs/common';
-import { JoinAck, JoinPayload, Meet, NewMeetAck, MeetEvent, User, SignalPayload } from './types';
+import {
+  JoinAck,
+  JoinPayload,
+  Meet,
+  NewMeetAck,
+  MeetEvent,
+  User,
+  SignalPayload,
+  Message,
+} from './types';
 import { WsException } from '@nestjs/websockets';
 const meetsCache = new Map<string, Meet>();
 
@@ -80,6 +89,10 @@ export class AppService {
   async handlePeerInit(client: Socket, payload: User): Promise<void> {
     const user: User = { id: client.id };
     client.to(payload.id).emit<MeetEvent>('init-peer', user);
+  }
+
+  async handleMessage(client: Socket, payload: Message): Promise<void> {
+    client.to(payload.meetId).emit<MeetEvent>('message', payload);
   }
 
   async createNewMeet(): Promise<NewMeetAck> {

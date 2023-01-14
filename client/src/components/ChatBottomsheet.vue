@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MeetChat from './MeetChat.vue';
+import MeetChat from './ChatBox.vue';
 </script>
 
 <template>

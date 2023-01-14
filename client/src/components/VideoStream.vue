@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
-// interface VideoStream {
-//   name: string;
-//   stream: MediaStream;
-//   mute?: boolean;
-// }
-
 const props = defineProps({
   name: { type: String, required: true },
   stream: { type: MediaStream, required: true },
@@ -21,7 +15,6 @@ function setStram() {
   video.value!.srcObject = props.stream;
   video.value!.autoplay = true;
   video.value!.playsInline = true;
-  video.value!.muted = props.mute;
 
   video.value!.onloadeddata = () => {
     video.value?.play();
@@ -31,7 +24,7 @@ function setStram() {
 
 <template>
   <div class="video-wrapper bg-grey-darken-3">
-    <video ref="video" class="w-100"></video>
+    <video :muted="props.mute" ref="video" class="w-100"></video>
   </div>
 </template>
 

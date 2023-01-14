@@ -15,6 +15,8 @@
   },
   "dependencies": {
     "@animxyz/vue3": "^0.6.7",
+    "@better-scroll/core": "^2.5.0",
+    "@better-scroll/mouse-wheel": "^2.5.0",
     "@vueuse/core": "^9.9.0",
     "is-url": "^1.2.4",
     "pinia": "^2.0.26",

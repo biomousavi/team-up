@@ -9,6 +9,12 @@ export interface User {
   mediaStream?: MediaStream;
 }
 
+export interface Message {
+  user: User;
+  text: string;
+  meetId: string;
+}
+
 export interface SignalPayload {
   user: User;
   data: SignalData;
@@ -44,7 +50,7 @@ export type ReservedEvent =
   | 'newListener'
   | 'removeListener';
 
-export type MeetEvent = 'join' | 'left' | 'new-meet' | 'signal' | 'init-peer';
+export type MeetEvent = 'join' | 'left' | 'new-meet' | 'signal' | 'init-peer' | 'message';
 
 export interface Meet {
   id: string;
