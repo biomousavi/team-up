@@ -22,12 +22,7 @@ onMounted(() => {
 watch(
   () => meet.messages,
   () => {
-    // const listEl = document.querySelector('.message-list');
-    // console.log(scroll.value?.scrollerWidth, 0);
-    // listEl?.scrollTo(0, listEl!.scrollHeight);
-
-    // scroll.value?.scrollTo(0, scroll.value.scrollerHeight);
-    // scroll.value?.scrollTo(0, -(scroll.value.scrollerHeight + 50), 300, undefined);
+    scroll.value?.scrollTo(0, -(scroll.value.scrollerHeight + 50), 300, undefined);
     scroll.value?.refresh();
   },
   { deep: true, immediate: true },
@@ -77,6 +72,8 @@ function sendMessage() {
             <p class="bg-grey-lighten-2 rounded-lg pa-2">{{ message.text }}</p>
           </div>
         </li>
+
+        <li style="height: 70px; width: 100%" class="bg-red"></li>
       </ul>
     </div>
 
