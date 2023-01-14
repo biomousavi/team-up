@@ -39,7 +39,7 @@ function onClickCopy(): void {
       </p>
 
       <div class="bg-grey-lighten-3 d-flex align-center justify-space-between px-2 my-3 rounded-lg">
-        <span class="text-caption"> {{ meetCode }} </span>
+        <span class="link text-caption"> {{ meetCode }} </span>
         <v-tooltip open-on-click :open-on-hover="false" location="right center">
           <template v-slot:activator="{ props }">
             <v-btn
@@ -59,3 +59,11 @@ function onClickCopy(): void {
     </v-card-text>
   </v-card>
 </template>
+
+<style scoped>
+@media only screen and (max-width: 960px) {
+  .link {
+    font-size: 10px !important;
+  }
+}
+</style>
