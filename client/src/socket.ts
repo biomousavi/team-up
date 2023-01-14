@@ -21,6 +21,8 @@ socket.on<ReservedEvent>('connect', () => {
 
 // catch connection error event, when server is down
 socket.on<ReservedEvent>('connect_error', (error) => {
+  socket.connect();
+
   const meet = useMeetStore();
   meet.alertMessage = "ERR_CONNECTION_REFUSED: We can't connect to server.";
   console.log(error);
