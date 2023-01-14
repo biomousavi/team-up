@@ -39,7 +39,8 @@ socket.on<MeetEvent>('left', (payload: User) => {
 });
 
 socket.on<MeetEvent>('message', (payload: Message) => {
-  // TODO
+  const meet = useMeetStore();
+  meet.addMessage(payload);
 });
 
 socket.on<MeetEvent>('signal', (payload: SignalPayload) => {

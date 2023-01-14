@@ -13,6 +13,7 @@ import {
 } from './types';
 import { WsException } from '@nestjs/websockets';
 const meetsCache = new Map<string, Meet>();
+const messagesCache = new Map<string, Message[]>();
 
 @Injectable()
 export class AppService {
@@ -71,7 +72,8 @@ export class AppService {
       });
 
       const users = meetsCache.get(meetId).users;
-      return { status: 'ok', users };
+      const messages = messagesCache.get(meetId) || [];
+      return { status: 'ok', users, messages };
     } catch (error) {
       let message = 'Something went wrong. ';
       if (error instanceof WsException) message = error.message;
@@ -91,8 +93,16 @@ export class AppService {
     client.to(payload.id).emit<MeetEvent>('init-peer', user);
   }
 
-  async handleMessage(client: Socket, payload: Message): Promise<void> {
-    client.to(payload.meetId).emit<MeetEvent>('message', payload);
+  async handleMessage(client: Socket, payload: Message): Promise<boolean> {
+    if (messagesCache.has(payload.meetId)) {
+      const messages = messagesCache.get(payload.meetId);
+      messages.push(payload);
+      messagesCache.set(payload.meetId, messages);
+    } else {
+      messagesCache.set(payload.meetId, [payload]);
+    }
+
+    return client.to(payload.meetId).emit<MeetEvent>('message', payload);
   }
 
   async createNewMeet(): Promise<NewMeetAck> {

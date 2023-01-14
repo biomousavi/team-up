@@ -39,7 +39,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage<MeetEvent>('message')
-  handleMessage(client: Socket, payload: Message): Promise<void> {
+  handleMessage(client: Socket, payload: Message): Promise<boolean> {
     return this.appService.handleMessage(client, payload);
   }
 

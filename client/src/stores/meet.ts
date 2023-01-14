@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import type { JoinAck, JoinPayload, MeetEvent, User, SignalPayload } from '@/types';
+import type { JoinAck, JoinPayload, MeetEvent, User, SignalPayload, Message } from '@/types';
 import type SimplePeer from 'simple-peer';
 import Peer from 'simple-peer/simplepeer.min.js';
 import { useUserStore } from './user';
@@ -17,6 +17,12 @@ export const useMeetStore = defineStore('meet', () => {
   const micOn = ref<boolean>(true);
   const camOn = ref<boolean>(true);
   const showNavigation = ref<boolean>(true);
+
+  // Meet messages
+  const messages = ref<Message[]>([]);
+
+  // Meet Users
+  const users = ref<User[]>([]);
 
   const date = ref<Date>(new Date());
   // update Date object every minute
@@ -46,8 +52,25 @@ export const useMeetStore = defineStore('meet', () => {
     errorMessage.value = message;
   }
 
-  // Meet Users
-  const users = ref<User[]>([]);
+  function sendMessage(text: string) {
+    const message: Message = {
+      text,
+      meetId: meetId.value!,
+      user: {
+        id: localUser.id!,
+        name: localUser.name!,
+        email: localUser.email!,
+      },
+    };
+    socket.emit<MeetEvent>('message', message, (received: boolean) => {
+      if (received) addMessage(message);
+    });
+  }
+
+  function addMessage(message: Message) {
+    messages.value.push(message);
+  }
+
   function addUser(newUser: User) {
     const userExists = users.value.find((user) => user.id === newUser.id);
 
@@ -136,8 +159,7 @@ export const useMeetStore = defineStore('meet', () => {
 
     // catch error event
     peers.value[user.id].on('error', (error) => {
-      // TODO:
-      console.log('eeeeeeeeeerrror', error);
+      console.log('peer connection error', error);
     });
 
     // when we get candidate from stun server
@@ -149,8 +171,7 @@ export const useMeetStore = defineStore('meet', () => {
     }
 
     peers.value[user.id].on('connect', (data) => {
-      // TODO:
-      console.log('cooooooooonectedxxxxxxxxxxxxxxx', data);
+      console.log('connected to peer', data);
     });
 
     // // when we stablished connection with other users
@@ -180,6 +201,7 @@ export const useMeetStore = defineStore('meet', () => {
       showError(ack.message!);
     } else {
       users.value = ack.users!;
+      messages.value = ack.messages!;
     }
   }
 
@@ -228,5 +250,8 @@ export const useMeetStore = defineStore('meet', () => {
     toggleCamera,
     toggleMicrophone,
     showNavigation,
+    sendMessage,
+    messages,
+    addMessage,
   };
 });

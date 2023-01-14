@@ -2,35 +2,31 @@
 import { ref, onMounted } from 'vue';
 import { mdiSend, mdiWindowClose } from '@mdi/js';
 import { useMeetStore } from '@/stores/meet';
-import type { Message } from '@/types';
 import BScroll from '@better-scroll/core';
 import MouseWheel from '@better-scroll/mouse-wheel';
 BScroll.use(MouseWheel);
 
+const meet = useMeetStore();
 const wrapper = ref<HTMLDivElement>();
+const inputMessage = ref<string | undefined>();
 
 onMounted(() => {
-  const a = new BScroll(wrapper.value!, {
+  const scroll = new BScroll(wrapper.value!, {
     specifiedIndexAsContent: 1,
-    mouseWheel: {
-      speed: 20,
-      invert: false,
-      easeTime: 300,
-    },
+    mouseWheel: { speed: 20, invert: false, easeTime: 300 },
   });
 
-  console.log(a);
+  scroll.enable();
 });
-
-const meet = useMeetStore();
-
-const inputMessage = ref<string | undefined>();
 
 function onToggleChat() {
   meet.chatOn = !meet.chatOn;
 }
 
-const messages: Message[] = [];
+function sendMessage() {
+  meet.sendMessage(inputMessage.value!);
+  inputMessage.value = undefined;
+}
 </script>
 
 <template>
@@ -55,7 +51,7 @@ const messages: Message[] = [];
       <ul class="message-list bg-white pb-8">
         <li
           class="message pa-2 ma-1 d-flex algin-center"
-          v-for="(message, index) of messages"
+          v-for="(message, index) of meet.messages"
           :key="index"
         >
           <div class="rounded-pill d-flex justify-center bg-red">
@@ -73,6 +69,7 @@ const messages: Message[] = [];
     <!-- Message Input -->
     <div class="d-flex justify-space-between align-center bg-grey-lighten-3 rounded-pill">
       <textarea
+        @keyup.enter="sendMessage"
         v-model="inputMessage"
         rows="1"
         contenteditable
@@ -88,7 +85,7 @@ const messages: Message[] = [];
         size="small"
         :disabled="!inputMessage?.length"
         variant="text"
-        @click="onToggleChat"
+        @click="sendMessage"
         :icon="mdiSend"
       ></v-btn>
     </div>

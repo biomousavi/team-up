@@ -40,6 +40,7 @@ export interface JoinAck {
   status: 'ok' | 'error';
   message?: string;
   users?: User[];
+  messages?: Message[];
 }
 
 export type ReservedEvent =
