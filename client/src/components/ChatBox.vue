@@ -73,7 +73,7 @@ function sendMessage() {
           </div>
         </li>
 
-        <li style="height: 70px; width: 100%" class="bg-red"></li>
+        <li style="height: 70px; width: 100%"></li>
       </ul>
     </div>
 
