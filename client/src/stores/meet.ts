@@ -17,6 +17,7 @@ export const useMeetStore = defineStore('meet', () => {
   const micOn = ref<boolean>(true);
   const camOn = ref<boolean>(true);
   const showNavigation = ref<boolean>(true);
+  const screenShareOn = ref<boolean>(false);
 
   // Meet messages
   const messages = ref<Message[]>([]);
@@ -88,8 +89,34 @@ export const useMeetStore = defineStore('meet', () => {
     users.value = users.value.filter((user) => user.id !== id);
   }
 
+  async function toggleScreenSHaring() {
+    if (screenShareOn.value) {
+      screenShareOn.value = false;
+      await getUserMediaPermission();
+    } else {
+      screenShareOn.value = true;
+      await getUserScreenMedia();
+    }
+  }
+
+  async function getUserScreenMedia() {
+    try {
+      localStream.value?.getTracks().forEach((track) => track.stop());
+      localStream.value = null;
+      localStream.value = await navigator.mediaDevices.getDisplayMedia({ audio: true, video: true });
+      hideAlert();
+    } catch (error) {
+      showAlert(
+        'PERMISSION_ERROR: We neet to access to you display and micrphone' +
+          'allow permissions and refresh the page.',
+      );
+      throw Error('Cant access to local stream.');
+    }
+  }
   async function getUserMediaPermission() {
     try {
+      localStream.value?.getTracks().forEach((track) => track.stop());
+      localStream.value = null;
       localStream.value = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
       hideAlert();
     } catch (error) {
@@ -253,5 +280,7 @@ export const useMeetStore = defineStore('meet', () => {
     sendMessage,
     messages,
     addMessage,
+    toggleScreenSHaring,
+    screenShareOn,
   };
 });

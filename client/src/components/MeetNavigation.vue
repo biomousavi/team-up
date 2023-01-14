@@ -6,7 +6,7 @@ import {
   mdiMicrophoneOff,
   mdiVideoOutline,
   mdiVideoOffOutline,
-  mdiHandBackRightOutline,
+  mdiMonitorScreenshot,
   mdiDotsVertical,
   mdiInformationOutline,
   mdiMessageTextOutline,
@@ -15,7 +15,7 @@ import { useMeetStore } from '@/stores/meet';
 
 const meet = useMeetStore();
 
-const handColor = ref<'white' | 'primary'>('white');
+const screenIconColor = ref<'white' | 'primary'>('white');
 
 const micIcon = ref<string>(mdiMicrophone);
 const micColor = ref<'white' | 'red'>('white');
@@ -23,9 +23,9 @@ const micColor = ref<'white' | 'red'>('white');
 const camIcon = ref<string>(mdiVideoOutline);
 const camColor = ref<'white' | 'red'>('white');
 
-function onToggleHand() {
-  meet.handRaised = !meet.handRaised;
-  handColor.value = handColor.value === 'white' ? 'primary' : 'white';
+async function onToggleScreenSHare() {
+  await meet.toggleScreenSHaring();
+  screenIconColor.value = screenIconColor.value === 'white' ? 'primary' : 'white';
 }
 
 function onToggleCam() {
@@ -95,9 +95,9 @@ function onToggleChat() {
           <v-btn
             size="small"
             class="mx-2"
-            @click="onToggleHand"
-            :color="handColor"
-            :icon="mdiHandBackRightOutline"
+            @click="onToggleScreenSHare"
+            :color="screenIconColor"
+            :icon="mdiMonitorScreenshot"
             v-bind="props"
           ></v-btn>
         </template>
