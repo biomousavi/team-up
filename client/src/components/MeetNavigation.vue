@@ -7,14 +7,16 @@ import {
   mdiVideoOutline,
   mdiVideoOffOutline,
   mdiMonitorScreenshot,
-  mdiDotsVertical,
   mdiInformationOutline,
   mdiMessageTextOutline,
   mdiRecordCircleOutline,
 } from '@mdi/js';
 import { useMeetStore } from '@/stores/meet';
+import MeetInfoCard from './MeetInfoCard.vue';
 
 const meet = useMeetStore();
+const meetInfoModal = ref<boolean>(false);
+const meetingCode = ref<string>('');
 
 const screenIconColor = ref<'white' | 'primary'>('white');
 
@@ -49,7 +51,12 @@ function onToggleMic() {
   micColor.value = micColor.value === 'red' ? 'white' : 'red';
 }
 
-function onToggleInfo() {}
+function onToggleInfo() {
+  const currentUrl = window.location.href;
+
+  meetingCode.value = currentUrl;
+  meetInfoModal.value = true;
+}
 
 function onToggleChat() {
   meet.chatOn = !meet.chatOn;
@@ -61,6 +68,10 @@ function onToggleChat() {
     v-if="meet.showNavigation"
     class="navigation d-flex flex-column-reverse flex-md-row flex-wrap justify-space-between align-center ma-3"
   >
+    <v-dialog v-model="meetInfoModal">
+      <MeetInfoCard v-model="meetInfoModal" :meet-code="meetingCode" />
+    </v-dialog>
+
     <!-- left section -->
     <div class="text-white d-flex justify-space-between">
       <span>
