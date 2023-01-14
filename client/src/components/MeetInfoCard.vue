@@ -33,7 +33,7 @@ function onClickCopy(): void {
     </v-card-title>
 
     <v-card-text class="pt-0">
-      <p class="text-caption">
+      <p style="font-size: 10px">
         Copy this link and send it to people that you want to meet with. Make sure that you save it so
         that you can use it later, too.
       </p>
@@ -59,11 +59,3 @@ function onClickCopy(): void {
     </v-card-text>
   </v-card>
 </template>
-
-<style scoped>
-@media only screen and (max-width: 960px) {
-  .link {
-    font-size: 10px !important;
-  }
-}
-</style>
