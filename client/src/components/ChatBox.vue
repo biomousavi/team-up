@@ -22,7 +22,7 @@ onMounted(() => {
 watch(
   () => meet.messages,
   () => {
-    scroll.value?.scrollTo(0, -(scroll.value.scrollerHeight + 50), 300, undefined);
+    scroll.value?.scrollTo(0, -(scroll.value.scrollerHeight + 50), 300);
     scroll.value?.refresh();
   },
   { deep: true, immediate: true },
@@ -58,22 +58,24 @@ function sendMessage() {
       </p>
 
       <ul class="message-list bg-white pb-8">
-        <li
-          class="message pa-2 ma-1 d-flex algin-center"
-          v-for="(message, index) of meet.messages"
-          :key="index"
-        >
-          <div class="rounded-pill d-flex justify-center bg-red">
-            <h6 class="align-self-center text-uppercase">{{ message.user.name?.charAt(0) }}</h6>
-          </div>
-          <div style="max-width: 14px; min-width: 14px" />
-          <div class="d-flex flex-column">
-            <h6>{{ message.user.name }}</h6>
-            <p class="bg-grey-lighten-2 rounded-lg pa-2">{{ message.text }}</p>
-          </div>
-        </li>
+        <XyzTransitionGroup xyz="fade down appear-stagger">
+          <li
+            class="message pa-2 ma-1 d-flex algin-center"
+            v-for="(message, index) of meet.messages"
+            :key="index"
+          >
+            <div class="rounded-pill d-flex justify-center bg-red">
+              <h6 class="align-self-center text-uppercase">{{ message.user.name?.charAt(0) }}</h6>
+            </div>
+            <div style="max-width: 14px; min-width: 14px" />
+            <div class="d-flex flex-column">
+              <h6>{{ message.user.name }}</h6>
+              <p class="bg-grey-lighten-2 rounded-lg pa-2">{{ message.text }}</p>
+            </div>
+          </li>
 
-        <li style="height: 70px; width: 100%"></li>
+          <li key="gap" style="height: 70px; width: 100%"></li>
+        </XyzTransitionGroup>
       </ul>
     </div>
 
