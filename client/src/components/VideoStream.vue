@@ -1,21 +1,27 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
-interface VideoStream {
-  name: string;
-  stream: MediaStream;
-}
+// interface VideoStream {
+//   name: string;
+//   stream: MediaStream;
+//   mute?: boolean;
+// }
 
-const props = defineProps<{ data: VideoStream }>();
+const props = defineProps({
+  name: { type: String, required: true },
+  stream: { type: MediaStream, required: true },
+  mute: { required: false, default: false, type: Boolean },
+});
 
 const video = ref<HTMLVideoElement>();
 
 onMounted(setStram);
 
 function setStram() {
-  video.value!.srcObject = props.data.stream;
+  video.value!.srcObject = props.stream;
   video.value!.autoplay = true;
   video.value!.playsInline = true;
+  video.value!.muted = props.mute;
 
   video.value!.onloadeddata = () => {
     video.value?.play();

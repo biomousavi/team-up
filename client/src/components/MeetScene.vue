@@ -7,7 +7,7 @@ import MeetNavigation from '@/components/MeetNavigation.vue';
 import { useDisplay } from 'vuetify/lib/framework.mjs';
 
 const meet = useMeetStore();
-const user = useUserStore();
+const localUser = useUserStore();
 const display = useDisplay();
 
 onUnmounted(meet.leaveRoom);
@@ -52,7 +52,9 @@ function onToggleNavigation() {
       @click="onToggleNavigation"
       key="local-stream"
       v-if="meet.localStream"
-      :data="{name:user.name!, stream:meet.localStream!}"
+      :name="localUser.name!"
+      :stream="meet.localStream!"
+      :mute="true"
     />
 
     <!-- remote streams -->
@@ -61,7 +63,8 @@ function onToggleNavigation() {
         @click="onToggleNavigation"
         :key="user.id"
         v-if="user.mediaStream"
-        :data="{name:user.name!, stream: user.mediaStream}"
+        :name="user.name!"
+        :stream="user.mediaStream"
       />
     </template>
 
