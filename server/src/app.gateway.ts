@@ -9,7 +9,11 @@ import { Socket, Server } from 'socket.io';
 import { AppService } from './app.service';
 import { JoinAck, JoinPayload, MeetEvent, NewMeetAck, SignalPayload, User } from './types';
 
-@WebSocketGateway({ cors: { origin: '*' }, serveClient: false, path: '/socket' })
+@WebSocketGateway({
+  path: '/socket',
+  serveClient: false,
+  cors: { origin: '*', methods: ['POST', 'GET'] },
+})
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(private appService: AppService) {}
   @WebSocketServer() server: Server;
