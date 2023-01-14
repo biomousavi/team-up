@@ -10,6 +10,7 @@ import {
   mdiDotsVertical,
   mdiInformationOutline,
   mdiMessageTextOutline,
+  mdiRecordCircleOutline,
 } from '@mdi/js';
 import { useMeetStore } from '@/stores/meet';
 
@@ -20,12 +21,19 @@ const screenIconColor = ref<'white' | 'primary'>('white');
 const micIcon = ref<string>(mdiMicrophone);
 const micColor = ref<'white' | 'red'>('white');
 
+const recordIconColor = ref<'white' | 'red'>('white');
+
 const camIcon = ref<string>(mdiVideoOutline);
 const camColor = ref<'white' | 'red'>('white');
 
 async function onToggleScreenSHare() {
   await meet.toggleScreenSHaring();
-  screenIconColor.value = screenIconColor.value === 'white' ? 'primary' : 'white';
+  screenIconColor.value = meet.screenShareOn === true ? 'primary' : 'white';
+}
+
+async function toggleScreenRecord() {
+  await meet.toggleScreenRecording();
+  recordIconColor.value = meet.screenRecordOn === true ? 'red' : 'white';
 }
 
 function onToggleCam() {
@@ -115,7 +123,14 @@ function onToggleChat() {
 
       <v-tooltip location="top center" text="More Options">
         <template v-slot:activator="{ props }">
-          <v-btn size="small" class="mx-2" :icon="mdiDotsVertical" v-bind="props" />
+          <v-btn
+            @click="toggleScreenRecord"
+            :color="recordIconColor"
+            size="small"
+            class="mx-2"
+            :icon="mdiRecordCircleOutline"
+            v-bind="props"
+          />
         </template>
       </v-tooltip>
     </div>

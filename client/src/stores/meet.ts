@@ -18,6 +18,9 @@ export const useMeetStore = defineStore('meet', () => {
   const camOn = ref<boolean>(true);
   const showNavigation = ref<boolean>(true);
   const screenShareOn = ref<boolean>(false);
+  const screenRecordOn = ref<boolean>(false);
+
+  const mediaRecorder = ref<MediaRecorder | null>();
 
   // Meet messages
   const messages = ref<Message[]>([]);
@@ -89,6 +92,55 @@ export const useMeetStore = defineStore('meet', () => {
     users.value = users.value.filter((user) => user.id !== id);
   }
 
+  async function toggleScreenRecording() {
+    if (screenRecordOn.value) {
+      stopRecordingScreen();
+      screenRecordOn.value = false;
+    } else {
+      await recordScreen();
+      screenRecordOn.value = true;
+    }
+  }
+
+  function stopRecordingScreen() {
+    mediaRecorder.value?.stop();
+  }
+
+  async function recordScreen() {
+    try {
+      // for better browser support
+      const mimeType = MediaRecorder.isTypeSupported('video/webm; codecs=vp9')
+        ? 'video/webm; codecs=vp9'
+        : 'video/webm';
+
+      const stream = await navigator.mediaDevices.getDisplayMedia({ audio: true, video: true });
+      mediaRecorder.value = new MediaRecorder(stream, { mimeType });
+
+      const chunks: Blob[] = [];
+      mediaRecorder.value?.addEventListener('dataavailable', function (e) {
+        chunks.push(e.data);
+      });
+
+      mediaRecorder.value.addEventListener('stop', function () {
+        const blob = new Blob(chunks, {
+          type: chunks[0].type,
+        });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'video.webm';
+
+        stream?.getTracks().forEach((track) => track.stop());
+        a.click();
+      });
+
+      mediaRecorder.value.start();
+    } catch (error) {
+      throw Error('Cant access to local stream.');
+    }
+  }
+
   async function toggleScreenSHaring() {
     if (screenShareOn.value) {
       screenShareOn.value = false;
@@ -104,12 +156,7 @@ export const useMeetStore = defineStore('meet', () => {
       localStream.value?.getTracks().forEach((track) => track.stop());
       localStream.value = null;
       localStream.value = await navigator.mediaDevices.getDisplayMedia({ audio: true, video: true });
-      hideAlert();
     } catch (error) {
-      showAlert(
-        'PERMISSION_ERROR: We neet to access to you display and micrphone' +
-          'allow permissions and refresh the page.',
-      );
       throw Error('Cant access to local stream.');
     }
   }
@@ -282,5 +329,8 @@ export const useMeetStore = defineStore('meet', () => {
     addMessage,
     toggleScreenSHaring,
     screenShareOn,
+    recordScreen,
+    toggleScreenRecording,
+    screenRecordOn,
   };
 });
