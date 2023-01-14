@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch, nextTick } from 'vue';
 import { mdiSend, mdiWindowClose } from '@mdi/js';
 import { useMeetStore } from '@/stores/meet';
 import BScroll from '@better-scroll/core';
@@ -7,17 +7,31 @@ import MouseWheel from '@better-scroll/mouse-wheel';
 BScroll.use(MouseWheel);
 
 const meet = useMeetStore();
+const scroll = ref<BScroll>();
 const wrapper = ref<HTMLDivElement>();
 const inputMessage = ref<string | undefined>();
 
 onMounted(() => {
-  const scroll = new BScroll(wrapper.value!, {
+  scroll.value = new BScroll(wrapper.value!, {
     specifiedIndexAsContent: 1,
     mouseWheel: { speed: 20, invert: false, easeTime: 300 },
+    probeType: 3,
   });
-
-  scroll.enable();
 });
+
+watch(
+  () => meet.messages,
+  () => {
+    // const listEl = document.querySelector('.message-list');
+    // console.log(scroll.value?.scrollerWidth, 0);
+    // listEl?.scrollTo(0, listEl!.scrollHeight);
+
+    // scroll.value?.scrollTo(0, scroll.value.scrollerHeight);
+    // scroll.value?.scrollTo(0, -(scroll.value.scrollerHeight + 50), 300, undefined);
+    scroll.value?.refresh();
+  },
+  { deep: true, immediate: true },
+);
 
 function onToggleChat() {
   meet.chatOn = !meet.chatOn;
