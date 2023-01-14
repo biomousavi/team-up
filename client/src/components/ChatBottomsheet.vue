@@ -15,7 +15,7 @@ import MeetChat from './ChatBox.vue';
   left: 0;
   bottom: 4%;
   width: 90%;
-  height: 70%;
+  height: 80%;
   margin: 0 auto;
   transform: translateY(130%);
   transition-duration: 0.6s;
