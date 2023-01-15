@@ -17,7 +17,10 @@ async function onSave() {
   const emailErrors = await emailInput.value?.validate();
 
   // check error length if exists
-  if (!nameErrors?.length && !emailErrors?.length) emit('save');
+  if (!nameErrors?.length && !emailErrors?.length) {
+    emit('save');
+    meet.hideCredentialModal();
+  }
 }
 
 const rules = {

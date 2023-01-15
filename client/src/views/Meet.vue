@@ -30,7 +30,6 @@ async function initMeeting() {
 }
 
 function onSaveCredentials() {
-  meet.hideCredentialModal();
   initMeeting();
 }
 </script>
