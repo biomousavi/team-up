@@ -142,8 +142,6 @@ export const useMeetStore = defineStore('meet', () => {
   }
 
   async function toggleScreenSHaring() {
-    console.log('togggg');
-
     if (screenShareOn.value) {
       screenShareOn.value = false;
       await getUserMediaPermission();

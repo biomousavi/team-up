@@ -2,8 +2,10 @@
 import { mdiCogOutline, mdiMessageAlertOutline, mdiHelpCircleOutline } from '@mdi/js';
 import { useMeetStore } from '@/stores/meet';
 import CredentialsModal from './CredentialsModal.vue';
+import { useDisplay } from 'vuetify/lib/framework.mjs';
 
 const meet = useMeetStore();
+const display = useDisplay();
 </script>
 
 <template>
@@ -18,7 +20,7 @@ const meet = useMeetStore();
 
       <div
         xyz="duration stagger-5 fade up"
-        class="d-flex flex-row-reverse justify-start align-center flex-wrap"
+        class="d-flex flex-row-reverse justify-start align-center flex-wrap mt-2 mt-md-0"
       >
         <v-btn
           @click="meet.showCredentialModal()"
@@ -26,6 +28,7 @@ const meet = useMeetStore();
           title="Settings"
           color="secondary"
           variant="text"
+          :size="display.smAndDown.value ? 'small' : 'large'"
           class="xyz-nested"
         >
         </v-btn>
@@ -50,7 +53,7 @@ const meet = useMeetStore();
         >
         </v-btn> -->
 
-        <p class="text-secondary mx-2 xyz-nested">
+        <p class="text-secondary text-caption text-md-body-1 mx-2 xyz-nested rubik">
           {{
             meet.date.toLocaleTimeString([], {
               hour: '2-digit',

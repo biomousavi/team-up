@@ -95,7 +95,7 @@ function onSlidePrev() {
             >
               Premium video meetings.
               <br />
-              Now free <span class="bg-primary rounded-lg py-1 px-4">for everyone.</span>
+              Now free <span class="bg-primary rounded-lg py-1 px-2">for everyone.</span>
             </h1>
 
             <p class="xyz-nested text-secondary text-body mt-6 rubik">
