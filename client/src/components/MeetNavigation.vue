@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import {
   mdiMicrophone,
   mdiPhoneHangup,
@@ -13,8 +13,11 @@ import {
 } from '@mdi/js';
 import { useMeetStore } from '@/stores/meet';
 import MeetInfoCard from './MeetInfoCard.vue';
+import { useDisplay } from 'vuetify/lib/framework.mjs';
 
 const meet = useMeetStore();
+const display = useDisplay();
+
 const meetInfoModal = ref<boolean>(false);
 const meetingCode = ref<string>('');
 
@@ -27,11 +30,6 @@ const recordIconColor = ref<'white' | 'red'>('white');
 
 const camIcon = ref<string>(mdiVideoOutline);
 const camColor = ref<'white' | 'red'>('white');
-
-async function onToggleScreenSHare() {
-  await meet.toggleScreenSHaring();
-  screenIconColor.value = meet.screenShareOn === true ? 'primary' : 'white';
-}
 
 async function toggleScreenRecord() {
   await meet.toggleScreenRecording();
@@ -82,7 +80,7 @@ function onToggleChat() {
     </div>
 
     <!-- center section -->
-    <div class="d-flex justify-space-between my-4 align-center">
+    <div class="d-flex justify-space-evenly my-4 align-center">
       <v-tooltip location="top center" text="Toggle Microphone">
         <template v-slot:activator="{ props }">
           <v-btn
@@ -109,13 +107,13 @@ function onToggleChat() {
         </template>
       </v-tooltip>
 
-      <v-tooltip location="top center" text="Raise Hand">
+      <v-tooltip v-if="!display.mobile.value" location="top center" text="Share Screen">
         <template v-slot:activator="{ props }">
           <v-btn
             size="small"
             class="mx-2"
-            @click="onToggleScreenSHare"
-            :color="screenIconColor"
+            @click="meet.toggleScreenSHaring"
+            :color="meet.screenShareOn ? 'primary' : 'white'"
             :icon="mdiMonitorScreenshot"
             v-bind="props"
           ></v-btn>
@@ -132,7 +130,7 @@ function onToggleChat() {
         </template>
       </v-tooltip>
 
-      <v-tooltip location="top center" text="More Options">
+      <v-tooltip v-if="!display.mobile.value" location="top center" text="Record">
         <template v-slot:activator="{ props }">
           <v-btn
             @click="toggleScreenRecord"

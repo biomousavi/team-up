@@ -21,7 +21,7 @@ import MeetChat from './ChatBox.vue';
   transition-duration: 0.6s;
   transition-delay: 0.1s;
   transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-timing-function: cubic-bezier(0.53, -0.27, 0.33, 1.2);
 }
 
 .chat-on .sheet {

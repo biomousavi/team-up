@@ -6,9 +6,8 @@ import { useMeetStore } from './stores/meet';
 import socket from './socket';
 import GlobalAlert from './components/GlobalAlert.vue';
 
-const display = useDisplay();
-
 const meet = useMeetStore();
+const display = useDisplay();
 
 const isDev = import.meta.env.DEV;
 

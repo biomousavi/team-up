@@ -142,6 +142,8 @@ export const useMeetStore = defineStore('meet', () => {
   }
 
   async function toggleScreenSHaring() {
+    console.log('togggg');
+
     if (screenShareOn.value) {
       screenShareOn.value = false;
       await getUserMediaPermission();
@@ -153,18 +155,42 @@ export const useMeetStore = defineStore('meet', () => {
 
   async function getUserScreenMedia() {
     try {
-      localStream.value?.getTracks().forEach((track) => track.stop());
-      localStream.value = null;
-      localStream.value = await navigator.mediaDevices.getDisplayMedia({ audio: true, video: true });
+      const stream = await navigator.mediaDevices.getDisplayMedia({ audio: true, video: true });
+
+      // when somebody clicked on "Stop sharing"
+      stream.getVideoTracks()[0].onended = toggleScreenSHaring;
+
+      switchPeerTracks(stream);
     } catch (error) {
       throw Error('Cant access to local stream.');
     }
   }
+
+  const switchPeerTracks = (stream) => {
+    for (const socket_id in peers.value) {
+      for (const index in peers.value[socket_id].streams[0].getTracks()) {
+        for (const index2 in stream.getTracks()) {
+          if (
+            peers.value[socket_id].streams[0].getTracks()[index].kind ===
+            stream.getTracks()[index2].kind
+          ) {
+            peers.value[socket_id].replaceTrack(
+              peers.value[socket_id].streams[0].getTracks()[index],
+              stream.getTracks()[index2],
+              peers.value[socket_id].streams[0],
+            );
+            break;
+          }
+        }
+      }
+    }
+  };
+
   async function getUserMediaPermission() {
     try {
-      localStream.value?.getTracks().forEach((track) => track.stop());
-      localStream.value = null;
       localStream.value = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+      switchPeerTracks(localStream.value);
+
       hideAlert();
     } catch (error) {
       showAlert(
@@ -251,6 +277,8 @@ export const useMeetStore = defineStore('meet', () => {
     // // when we stablished connection with other users
     peers.value[user.id].on('stream', handlePeerSignal);
     function handlePeerSignal(data: MediaStream) {
+      console.log('got stream');
+
       users.value.forEach((u) => {
         if (u.id === user.id) {
           u.mediaStream = data;
