@@ -80,7 +80,7 @@ function onToggleChat() {
     </div>
 
     <!-- center section -->
-    <div class="d-flex justify-space-evenly my-4 align-center">
+    <div class="d-flex justify-space-between my-4 align-center">
       <v-tooltip location="top center" text="Toggle Microphone">
         <template v-slot:activator="{ props }">
           <v-btn
