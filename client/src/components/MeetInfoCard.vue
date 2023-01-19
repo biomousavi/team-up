@@ -33,13 +33,13 @@ function onClickCopy(): void {
     </v-card-title>
 
     <v-card-text class="pt-0">
-      <p style="font-size: 8px">
+      <p class="text-caption">
         Copy this link and send it to people that you want to meet with. Make sure that you save it so
         that you can use it later, too.
       </p>
 
       <div class="bg-grey-lighten-3 d-flex align-center justify-space-between px-2 my-3 rounded-lg">
-        <span class="link text-caption"> {{ meetCode }} </span>
+        <span class="link text-caption rubik"> {{ meetCode }} </span>
         <v-tooltip open-on-click :open-on-hover="false" location="right center">
           <template v-slot:activator="{ props }">
             <v-btn
@@ -59,3 +59,11 @@ function onClickCopy(): void {
     </v-card-text>
   </v-card>
 </template>
+
+<style scoped>
+@media only screen and (max-width: 960px) {
+  .link {
+    font-size: 10px !important;
+  }
+}
+</style>
