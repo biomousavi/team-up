@@ -1,14 +1,10 @@
 import 'vuetify/styles';
 import { createVuetify } from 'vuetify';
-import { mdi } from 'vuetify/iconsets/mdi-svg';
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 
 const vuetify = createVuetify({
-  icons: {
-    defaultSet: 'mdi',
-    sets: {
-      mdi,
-    },
-  },
+  ssr: false,
+  icons: { defaultSet: 'mdi', aliases, sets: { mdi } },
   theme: {
     themes: {
       light: {

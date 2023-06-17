@@ -5,9 +5,9 @@ import IndexShowcase from '@/components/Showcase.vue';
 
 <template>
   <main class="h-100 bg-reds">
-    <v-container class="h-100 d-flex flex-column">
+    <VContainer class="h-100 d-flex flex-column">
       <IndexHeader />
       <IndexShowcase />
-    </v-container>
+    </VContainer>
   </main>
 </template>

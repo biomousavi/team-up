@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap');
 
 :root {
@@ -8,19 +7,7 @@
   scrollbar-width: none;
 }
 
+/*  hide the scrollbar */
 ::-webkit-scrollbar {
-  width: 0;
-}
-
-#app {
-  -webkit-font-smoothing: antialiased;
-  font-family: 'Rubik', sans-serif;
-}
-
-#app .rubik{
-  font-family: 'Rubik', sans-serif !important;
-}
-
-.rubik{
-  font-family: 'Rubik', sans-serif !important;
+  width: 0; 
 }

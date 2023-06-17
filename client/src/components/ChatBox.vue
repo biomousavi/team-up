@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { mdiSend, mdiWindowClose } from '@mdi/js';
 import { useMeetStore } from '@/stores/meet';
 import BScroll from '@better-scroll/core';

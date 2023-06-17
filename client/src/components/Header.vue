@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { mdiCogOutline, mdiMessageAlertOutline, mdiHelpCircleOutline } from '@mdi/js';
+import { useDisplay } from 'vuetify';
+import { mdiCogOutline } from '@mdi/js';
 import { useMeetStore } from '@/stores/meet';
 import CredentialsModal from './CredentialsModal.vue';
-import { useDisplay } from 'vuetify/lib/framework.mjs';
 
 const meet = useMeetStore();
-const display = useDisplay();
+const { smAndDown } = useDisplay();
 </script>
 
 <template>
@@ -28,7 +28,7 @@ const display = useDisplay();
           title="Settings"
           color="secondary"
           variant="text"
-          :size="display.smAndDown.value ? 'small' : 'large'"
+          :size="smAndDown ? 'small' : 'large'"
           class="xyz-nested"
         >
         </v-btn>

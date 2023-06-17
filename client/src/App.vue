@@ -25,12 +25,12 @@ onBeforeUnmount(() => {
 
 <template>
   <div v-if="isDev">{{ display.name }}</div>
-  <v-app style="min-height: 100vh">
+  <VApp style="min-height: 100vh">
     <GlobalAlert />
     <RouterView v-slot="{ Component }">
       <XyzTransition xyz="fade" mode="out-in">
         <component :is="Component" />
       </XyzTransition>
     </RouterView>
-  </v-app>
+  </VApp>
 </template>

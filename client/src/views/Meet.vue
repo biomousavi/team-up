@@ -8,7 +8,7 @@ import CredentialsModal from '@/components/CredentialsModal.vue';
 import MeetScene from '@/components/MeetScene.vue';
 import ChatBottomsheet from '@/components/ChatBottomsheet.vue';
 import ChatSidebar from '@/components/ChatSidebar.vue';
-import { useDisplay } from 'vuetify/lib/framework.mjs';
+import { useDisplay } from 'vuetify';
 
 const route = useRoute();
 const user = useUserStore();

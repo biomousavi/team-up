@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
 import {
   mdiMicrophone,
   mdiPhoneHangup,
@@ -11,17 +10,16 @@ import {
   mdiMessageTextOutline,
   mdiRecordCircleOutline,
 } from '@mdi/js';
+import { ref } from 'vue';
+import { useDisplay } from 'vuetify';
 import { useMeetStore } from '@/stores/meet';
 import MeetInfoCard from './MeetInfoCard.vue';
-import { useDisplay } from 'vuetify/lib/framework.mjs';
 
 const meet = useMeetStore();
 const display = useDisplay();
 
 const meetInfoModal = ref<boolean>(false);
 const meetingCode = ref<string>('');
-
-const screenIconColor = ref<'white' | 'primary'>('white');
 
 const micIcon = ref<string>(mdiMicrophone);
 const micColor = ref<'white' | 'red'>('white');
