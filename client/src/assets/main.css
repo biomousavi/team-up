@@ -11,3 +11,7 @@
 ::-webkit-scrollbar {
   width: 0; 
 }
+
+div.v-row {
+  margin: 0;
+}

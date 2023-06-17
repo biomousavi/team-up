@@ -31,7 +31,7 @@ onMounted(initMeeting);
 </script>
 
 <template>
-  <div class="d-flex flex-column justify-space-between h-100">
+  <div class="main d-flex flex-column justify-space-between h-100">
     <ErrorModal />
     <CredentialsModal @save="initMeeting" />
     <div class="container overflow-hidden d-flex h-100 w-100" :class="{ 'chat-on': meet.chatOn }">
@@ -44,9 +44,8 @@ onMounted(initMeeting);
 </template>
 
 <style scoped>
-main {
+.main {
   max-height: 100vh;
-  min-height: 100vh;
   background-color: #202124;
 }
 

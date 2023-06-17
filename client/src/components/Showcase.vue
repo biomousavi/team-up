@@ -90,14 +90,14 @@ function onSlidePrev() {
           <div xyz="big fade stagger">
             <h1
               style="line-height: 165%"
-              class="xyz-nested font-weight-bold text-h5 text-sm-h4 text-xl-h2 rubik"
+              class="xyz-nested font-weight-bold text-h5 text-sm-h4 text-xl-h2"
             >
               Premium video meetings.
               <br />
               Now free <span class="bg-primary rounded-lg py-1 px-2">for everyone.</span>
             </h1>
 
-            <p class="xyz-nested text-secondary text-body mt-6 rubik">
+            <p class="xyz-nested text-secondary text-body mt-6">
               We re-engineered the service that we built for secure business meetings
               <br />
               TeamUp, to make it free and available for all. Meet with your teammates.

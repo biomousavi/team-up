@@ -4,9 +4,9 @@ import IndexShowcase from '@/components/Showcase.vue';
 </script>
 
 <template>
-  <VContainer class="h-100 d-flex flex-column">
+  <VContainer class="d-flex flex-column h-100">
     <VRow justify="center">
-      <VCol cols="12" xl="10">
+      <VCol cols="12" xl="10" class="d-flex flex-column">
         <IndexHeader />
         <IndexShowcase />
       </VCol>
