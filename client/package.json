@@ -32,6 +32,7 @@
   "devDependencies": {
     "@mdi/js": "^7.2.96",
     "@rushstack/eslint-patch": "^1.3.2",
+    "@types/is-url": "^1.2.30",
     "@types/node": "^20.3.1",
     "@types/simple-peer": "^9.11.5",
     "@vitejs/plugin-vue": "^4.2.3",
