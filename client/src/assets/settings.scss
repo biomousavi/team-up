@@ -1,0 +1,6 @@
+$family: 'Rubik', 'Roboto', sans-serif;
+
+@use "vuetify/settings" with (
+  $body-font-family: $family,
+  $button-text-transform:  capitalize,
+);

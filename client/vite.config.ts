@@ -6,18 +6,7 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig(() => {
   return {
-    plugins: [
-      vue({
-        template: {
-          compilerOptions: {
-            isCustomElement: (tag) => {
-              if (tag === 'dotlottie-player') return true;
-            },
-          },
-        },
-      }),
-      vuetify({}),
-    ],
+    plugins: [vue(), vuetify({ styles: { configFile: 'src/assets/settings.scss' } })],
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
