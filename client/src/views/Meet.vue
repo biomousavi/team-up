@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
+import { useDisplay } from 'vuetify';
+import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useMeetStore } from '@/stores/meet';
 import ErrorModal from '@/components/ErrorModal.vue';
@@ -8,40 +9,35 @@ import CredentialsModal from '@/components/CredentialsModal.vue';
 import MeetScene from '@/components/MeetScene.vue';
 import ChatBottomsheet from '@/components/ChatBottomsheet.vue';
 import ChatSidebar from '@/components/ChatSidebar.vue';
-import { useDisplay } from 'vuetify';
 
 const route = useRoute();
 const user = useUserStore();
 const meet = useMeetStore();
-const display = useDisplay();
-
-onMounted(initMeeting);
+const { smAndDown } = useDisplay();
 
 async function initMeeting() {
-  // update meet Id
-  meet.meetId = route.params.meetId as string;
+  const meetId = route.params.meetId as string;
+  meet.setMeetId(meetId); // update meet Id
 
   // check user credentials
-  if (user.validCredentials) {
+  if (user.hasValidCredentials) {
     await meet.initConnection();
   } else {
     meet.showCredentialModal();
   }
 }
 
-function onSaveCredentials() {
-  initMeeting();
-}
+onMounted(initMeeting);
 </script>
 
 <template>
   <main class="d-flex flex-column justify-space-between">
     <ErrorModal />
-    <CredentialsModal @save="onSaveCredentials" />
+    <CredentialsModal @save="initMeeting" />
     <div class="container overflow-hidden d-flex h-100 w-100" :class="{ 'chat-on': meet.chatOn }">
       <MeetScene />
 
-      <ChatBottomsheet v-if="display.smAndDown.value" />
+      <ChatBottomsheet v-if="smAndDown" />
       <ChatSidebar v-else />
     </div>
   </main>

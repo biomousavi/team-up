@@ -1,8 +1,8 @@
 import { ref } from 'vue';
+import Peer from 'simple-peer';
 import { defineStore } from 'pinia';
-import type { JoinAck, JoinPayload, MeetEvent, User, SignalPayload, Message } from '@/types';
 import type SimplePeer from 'simple-peer';
-import Peer from 'simple-peer/simplepeer.min.js';
+import type { JoinAck, JoinPayload, MeetEvent, User, SignalPayload, Message } from '@/types';
 import { useUserStore } from './user';
 import socket from '../socket';
 
@@ -10,6 +10,7 @@ export const useMeetStore = defineStore('meet', () => {
   const localUser = useUserStore();
 
   const meetId = ref<string | null>();
+  const setMeetId = (id: string) => (meetId.value = id);
 
   // Meet Chat
   const chatOn = ref<boolean>(false);
@@ -71,9 +72,7 @@ export const useMeetStore = defineStore('meet', () => {
     });
   }
 
-  function addMessage(message: Message) {
-    messages.value.push(message);
-  }
+  const addMessage = (message: Message) => messages.value.push(message);
 
   function addUser(newUser: User) {
     const userExists = users.value.find((user) => user.id === newUser.id);
@@ -81,6 +80,7 @@ export const useMeetStore = defineStore('meet', () => {
     // if user not exist, add it to users array
     if (!userExists) users.value.push(newUser);
   }
+
   function removeUser(id: string) {
     // destroy remote peer
     if (peers.value[id]) {
@@ -92,6 +92,8 @@ export const useMeetStore = defineStore('meet', () => {
     users.value = users.value.filter((user) => user.id !== id);
   }
 
+  const stopRecordingScreen = () => mediaRecorder.value?.stop();
+
   async function toggleScreenRecording() {
     if (screenRecordOn.value) {
       stopRecordingScreen();
@@ -100,10 +102,6 @@ export const useMeetStore = defineStore('meet', () => {
       await recordScreen();
       screenRecordOn.value = true;
     }
-  }
-
-  function stopRecordingScreen() {
-    mediaRecorder.value?.stop();
   }
 
   async function recordScreen() {
@@ -164,7 +162,7 @@ export const useMeetStore = defineStore('meet', () => {
     }
   }
 
-  const switchPeerTracks = (stream) => {
+  const switchPeerTracks = (stream: MediaStream) => {
     for (const socket_id in peers.value) {
       for (const index in peers.value[socket_id].streams[0].getTracks()) {
         for (const index2 in stream.getTracks()) {
@@ -242,9 +240,7 @@ export const useMeetStore = defineStore('meet', () => {
     }
   }
 
-  function initPeer(payload: User) {
-    socket.emit<MeetEvent>('init-peer', payload);
-  }
+  const initPeer = (payload: User) => socket.emit<MeetEvent>('init-peer', payload);
 
   function createPeerConn(user: User, initiator: boolean) {
     const peerOptions: SimplePeer.Options = {
@@ -268,7 +264,7 @@ export const useMeetStore = defineStore('meet', () => {
       socket.emit<MeetEvent>('signal', payload);
     }
 
-    peers.value[user.id].on('connect', (data) => {
+    peers.value[user.id].on('connect', (data: any) => {
       console.log('connected to peer', data);
     });
 
@@ -305,7 +301,7 @@ export const useMeetStore = defineStore('meet', () => {
     }
   }
 
-  let initConnInterval;
+  let initConnInterval: NodeJS.Timer;
   async function initConnection() {
     try {
       await getUserMediaPermission();
@@ -331,6 +327,7 @@ export const useMeetStore = defineStore('meet', () => {
     date,
     meetId,
     users,
+    setMeetId,
     addUser,
     removeUser,
     dateInterval,
