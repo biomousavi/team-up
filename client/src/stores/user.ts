@@ -7,9 +7,7 @@ export const useUserStore = defineStore('user', () => {
   const name = useLocalStorage<string | null>('store/user/name', null);
   const email = useLocalStorage<string | null>('store/user/email', null);
 
-  const validCredentials = computed(() => {
-    return name.value && email.value ? true : false;
-  });
+  const hasValidCredentials = computed(() => (name.value && email.value ? true : false));
 
-  return { id, name, email, validCredentials };
+  return { id, name, email, hasValidCredentials };
 });

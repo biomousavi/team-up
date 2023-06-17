@@ -13,6 +13,6 @@ const meet = useMeetStore();
     color="red"
     rounded="0"
   >
-    <h4 class="rubik">{{ meet.alertMessage }}</h4>
+    <h4>{{ meet.alertMessage }}</h4>
   </v-alert>
 </template>

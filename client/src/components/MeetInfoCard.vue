@@ -13,9 +13,7 @@ const props = defineProps({
   },
 });
 
-function onClickCopy(): void {
-  navigator.clipboard.writeText(props.meetCode);
-}
+const onClickCopy = () => navigator.clipboard.writeText(props.meetCode);
 </script>
 
 <template>

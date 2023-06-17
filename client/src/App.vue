@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted } from 'vue';
-import { RouterView } from 'vue-router';
 import { useDisplay } from 'vuetify';
-import { useMeetStore } from './stores/meet';
+import { RouterView } from 'vue-router';
+import { onBeforeUnmount, onMounted } from 'vue';
 import socket from './socket';
+import { useMeetStore } from './stores/meet';
 import GlobalAlert from './components/GlobalAlert.vue';
 
 const meet = useMeetStore();
-const display = useDisplay();
+const { name } = useDisplay();
 
 const isDev = import.meta.env.DEV;
 
@@ -24,12 +24,13 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div v-if="isDev">{{ display.name }}</div>
-  <VApp style="min-height: 100vh">
+  <!-- show display breakpoint name for debugging -->
+  <div v-if="isDev">{{ name }}</div>
+  <VApp>
     <GlobalAlert />
     <RouterView v-slot="{ Component }">
       <XyzTransition xyz="fade" mode="out-in">
-        <component :is="Component" />
+        <main class="h-100"><component :is="Component" /></main>
       </XyzTransition>
     </RouterView>
   </VApp>

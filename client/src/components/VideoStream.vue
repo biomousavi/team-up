@@ -9,8 +9,6 @@ const props = defineProps({
 
 const video = ref<HTMLVideoElement>();
 
-onMounted(setStram);
-
 function setStram() {
   video.value!.srcObject = props.stream;
   video.value!.autoplay = true;
@@ -20,6 +18,8 @@ function setStram() {
     video.value?.play();
   };
 }
+
+onMounted(setStram);
 </script>
 
 <template>
@@ -35,12 +35,6 @@ function setStram() {
   height: 100%;
   border-radius: 10px;
   transition: all 0.3s ease;
-}
-.video-wrapper:hover {
-  /* transform: scale(1.1); */
-  /* position: fixed;
-  margin: auto;
-  width: 70vw; */
 }
 
 video {

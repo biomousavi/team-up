@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDisplay } from 'vuetify';
-import { mdiCogOutline } from '@mdi/js';
+import { mdiCogOutline, mdiHelpCircleOutline, mdiMessageAlertOutline } from '@mdi/js';
 import { useMeetStore } from '@/stores/meet';
 import CredentialsModal from './CredentialsModal.vue';
 
@@ -33,25 +33,23 @@ const { smAndDown } = useDisplay();
         >
         </v-btn>
 
-        <!-- <v-btn
-          @click="onSettings"
+        <v-btn
           :icon="mdiHelpCircleOutline"
           title="Help"
           color="secondary"
           variant="text"
           class="xyz-nested"
         >
-        </v-btn> -->
+        </v-btn>
 
-        <!-- <v-btn
-          @click="onSettings"
+        <v-btn
           :icon="mdiMessageAlertOutline"
           title="Feedback"
           color="secondary"
           variant="text"
           class="xyz-nested"
         >
-        </v-btn> -->
+        </v-btn>
 
         <p class="text-secondary text-caption text-md-body-1 mx-2 xyz-nested rubik">
           {{

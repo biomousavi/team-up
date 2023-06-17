@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import 'swiper/css';
-import { useRouter } from 'vue-router';
+import isUrl from 'is-url';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { mdiVideoPlusOutline, mdiLink, mdiPlus, mdiChevronRight, mdiChevronLeft } from '@mdi/js';
 import socket from '@/socket';
-import type { MeetEvent, NewMeetAck } from '@/types';
 import MeetInfoCard from './MeetInfoCard.vue';
-import isUrl from 'is-url';
-const router = useRouter();
+import type { MeetEvent, NewMeetAck } from '@/types';
 
+const router = useRouter();
 const meetingCode = ref<string>('');
 const isInputFocused = ref<boolean>(false);
 const meetInfoModal = ref<boolean>(false);
@@ -64,15 +64,14 @@ function onJoin() {
   }
 }
 
-function onUpdateFocuse(isFocuesd: boolean) {
-  isInputFocused.value = isFocuesd;
-}
+const onUpdateFocuse = (isFocuesd: boolean) => (isInputFocused.value = isFocuesd);
 
 function onSlideNext() {
   if (slideIndex.value < slides.length - 1) {
     slideIndex.value++;
   }
 }
+
 function onSlidePrev() {
   if (slideIndex.value > 0) {
     slideIndex.value--;
@@ -86,7 +85,7 @@ function onSlidePrev() {
   </v-dialog>
   <XyzTransition appear duration="auto">
     <v-row class="h-100" justify="space-between">
-      <v-col class="d-flex flex-column justify-center" cols="12" md="7" lg="5">
+      <v-col class="d-flex flex-column justify-center" cols="12" md="7" lg="5" xl="6">
         <div>
           <div xyz="big fade stagger">
             <h1
@@ -179,9 +178,7 @@ function onSlidePrev() {
           </XyzTransition>
 
           <p xyz="fade down delay-15">
-            <a class="text-primary xyz-nested" style="text-decoration: none" href="/about">
-              Learn more
-            </a>
+            <a class="text-primary xyz-nested" style="text-decoration: none" href="#"> Learn more </a>
             <span class="text-secondary xyz-nested"> about TeamUp</span>
           </p>
         </div>
@@ -197,7 +194,9 @@ function onSlidePrev() {
         ></v-btn>
         <XyzTransition xyz="fade stagger delay-0" mode="out-in">
           <div class="d-flex flex-column text-center" :key="slideIndex">
-            <img
+            <VImg
+              width="100%"
+              height="auto"
               class="xyz-nested"
               key="0"
               :src="slides[slideIndex].img"
@@ -218,10 +217,3 @@ function onSlidePrev() {
     </v-row>
   </XyzTransition>
 </template>
-
-<style scoped>
-img {
-  width: 100%;
-  height: auto;
-}
-</style>

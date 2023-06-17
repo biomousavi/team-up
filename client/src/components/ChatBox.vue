@@ -4,8 +4,8 @@ import { mdiSend, mdiWindowClose } from '@mdi/js';
 import { useMeetStore } from '@/stores/meet';
 import BScroll from '@better-scroll/core';
 import MouseWheel from '@better-scroll/mouse-wheel';
-BScroll.use(MouseWheel);
 
+BScroll.use(MouseWheel);
 const meet = useMeetStore();
 const scroll = ref<BScroll>();
 const wrapper = ref<HTMLDivElement>();

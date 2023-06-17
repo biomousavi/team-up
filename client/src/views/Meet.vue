@@ -31,7 +31,7 @@ onMounted(initMeeting);
 </script>
 
 <template>
-  <main class="d-flex flex-column justify-space-between">
+  <div class="d-flex flex-column justify-space-between">
     <ErrorModal />
     <CredentialsModal @save="initMeeting" />
     <div class="container overflow-hidden d-flex h-100 w-100" :class="{ 'chat-on': meet.chatOn }">
@@ -40,7 +40,7 @@ onMounted(initMeeting);
       <ChatBottomsheet v-if="smAndDown" />
       <ChatSidebar v-else />
     </div>
-  </main>
+  </div>
 </template>
 
 <style scoped>

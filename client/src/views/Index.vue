@@ -4,10 +4,12 @@ import IndexShowcase from '@/components/Showcase.vue';
 </script>
 
 <template>
-  <main class="h-100 bg-reds">
-    <VContainer class="h-100 d-flex flex-column">
-      <IndexHeader />
-      <IndexShowcase />
-    </VContainer>
-  </main>
+  <VContainer class="h-100 d-flex flex-column">
+    <VRow justify="center">
+      <VCol cols="12" xl="10">
+        <IndexHeader />
+        <IndexShowcase />
+      </VCol>
+    </VRow>
+  </VContainer>
 </template>

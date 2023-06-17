@@ -4,11 +4,11 @@ import { useMeetStore } from '@/stores/meet';
 import VideoStream from './VideoStream.vue';
 import { useUserStore } from '@/stores/user';
 import MeetNavigation from '@/components/MeetNavigation.vue';
-import { useDisplay } from 'vuetify/lib/framework.mjs';
+import { useDisplay } from 'vuetify';
 
 const meet = useMeetStore();
 const localUser = useUserStore();
-const display = useDisplay();
+const { smAndDown } = useDisplay();
 
 onUnmounted(meet.leaveRoom);
 
@@ -31,7 +31,7 @@ const sceneLayout = computed(() => {
   let gridTemplate: any = { 'grid-template-columns': sceneFraction.value };
 
   // if we had only two users, apply row direction
-  if (display.smAndDown.value && meet.users.length === 2) {
+  if (smAndDown.value && meet.users.length === 2) {
     gridTemplate = { 'grid-template-rows': sceneFraction.value };
   }
 
@@ -39,9 +39,7 @@ const sceneLayout = computed(() => {
 });
 
 function onToggleNavigation() {
-  if (display.smAndDown.value) {
-    meet.showNavigation = !meet.showNavigation;
-  }
+  if (smAndDown.value) meet.showNavigation = !meet.showNavigation;
 }
 </script>
 
