@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { useDisplay } from 'vuetify';
-import { mdiCogOutline, mdiHelpCircleOutline, mdiMessageAlertOutline } from '@mdi/js';
+import { mdiCogOutline, mdiWeatherNight, mdiWeatherSunny } from '@mdi/js';
 import { useMeetStore } from '@/stores/meet';
+import { useThemeToggle } from '@/composables/useThemeToggle';
 import CredentialsModal from './CredentialsModal.vue';
 
 const meet = useMeetStore();
 const { smAndDown } = useDisplay();
+const { toggleTheme, isDark } = useThemeToggle();
 </script>
 
 <template>
@@ -13,7 +15,7 @@ const { smAndDown } = useDisplay();
     <header class="d-flex justify-space-between align-start mb-12 mb-md-0">
       <div class="d-flex align-end" xyz="fade stagger ease-out">
         <img src="/team.png" alt="TeamUp-image" class="xyz-nested" />
-        <router-link class="mx-1 text-secondary xyz-nested" to="/"> TeamUp </router-link>
+        <router-link class="mx-1 text-on-surface xyz-nested" to="/"> TeamUp </router-link>
       </div>
 
       <CredentialsModal />
@@ -26,7 +28,7 @@ const { smAndDown } = useDisplay();
           @click="meet.showCredentialModal()"
           :icon="mdiCogOutline"
           title="Settings"
-          color="secondary"
+          color="on-surface"
           variant="text"
           :size="smAndDown ? 'small' : 'large'"
           class="xyz-nested"
@@ -34,24 +36,17 @@ const { smAndDown } = useDisplay();
         </v-btn>
 
         <v-btn
-          :icon="mdiHelpCircleOutline"
-          title="Help"
-          color="secondary"
+          @click="toggleTheme"
+          :icon="isDark() ? mdiWeatherSunny : mdiWeatherNight"
+          :title="isDark() ? 'Switch to light theme' : 'Switch to dark theme'"
+          color="on-surface"
           variant="text"
+          :size="smAndDown ? 'small' : 'large'"
           class="xyz-nested"
         >
         </v-btn>
 
-        <v-btn
-          :icon="mdiMessageAlertOutline"
-          title="Feedback"
-          color="secondary"
-          variant="text"
-          class="xyz-nested"
-        >
-        </v-btn>
-
-        <p class="text-secondary text-caption text-md-body-1 mx-2 xyz-nested rubik">
+        <p class="date-readout text-medium-emphasis text-caption text-md-body-1 mx-2 xyz-nested font-mono">
           {{
             meet.date.toLocaleTimeString([], {
               hour: '2-digit',
