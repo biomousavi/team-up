@@ -23,6 +23,16 @@ export default defineConfig(() => {
     // define env file directory
     envDir: '../',
 
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vuetify: ['vuetify'],
+          },
+        },
+      },
+    },
+
     // config vite dev server
     server: {
       host: '0.0.0.0',
