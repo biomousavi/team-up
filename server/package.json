@@ -43,7 +43,7 @@
     "@nestjs/schematics": "^11.1.0",
     "@nestjs/testing": "^11.1.28",
     "@types/jest": "^30.0.0",
-    "@types/node": "^26.1.1",
+    "@types/node": "^22.20.1",
     "@types/reflect-metadata": "^0.1.0",
     "@types/simple-peer": "^9.11.5",
     "@types/supertest": "^7.2.1",
