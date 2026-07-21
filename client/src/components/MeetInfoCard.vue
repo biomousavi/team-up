@@ -22,7 +22,7 @@ const onClickCopy = () => navigator.clipboard.writeText(props.meetCode);
       <p class="text-body-1 font-weight-bold">Here's the link to your meeting</p>
       <v-btn
         :icon="mdiClose"
-        color="black"
+        color="on-surface"
         variant="text"
         class="font-weight-bold"
         @click="$emit('update:modelValue', false)"
@@ -36,8 +36,8 @@ const onClickCopy = () => navigator.clipboard.writeText(props.meetCode);
         that you can use it later, too.
       </p>
 
-      <div class="bg-grey-lighten-3 d-flex align-center justify-space-between px-2 my-3 rounded-lg">
-        <span class="link text-caption rubik"> {{ meetCode }} </span>
+      <div class="bg-surface-variant d-flex align-center justify-space-between px-2 my-3 rounded-lg">
+        <span class="link text-caption font-mono"> {{ meetCode }} </span>
         <v-tooltip open-on-click :open-on-hover="false" location="right center">
           <template v-slot:activator="{ props }">
             <v-btn
@@ -61,7 +61,7 @@ const onClickCopy = () => navigator.clipboard.writeText(props.meetCode);
 <style scoped>
 @media only screen and (max-width: 960px) {
   .link {
-    font-size: 10px !important;
+    font-size: 10px;
   }
 }
 </style>

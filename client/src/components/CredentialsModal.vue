@@ -63,7 +63,7 @@ const rules = {
       </v-card-text>
 
       <v-card-actions class="d-flex justify-end">
-        <v-btn color="black" variant="tonal" class="font-weight-bold" @click="onSave" rounded="lg">
+        <v-btn color="primary" variant="tonal" class="font-weight-bold" @click="onSave" rounded="lg">
           save
         </v-btn>
       </v-card-actions>

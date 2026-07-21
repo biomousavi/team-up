@@ -8,7 +8,9 @@ import MeetChat from './ChatBox.vue';
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use '../assets/tokens' as tokens;
+
 .chat {
   transition-duration: 0.6s;
   transition-delay: 0.1s;
@@ -17,11 +19,11 @@ import MeetChat from './ChatBox.vue';
 }
 
 .chat-on {
-  width: calc(100% - 400px);
+  width: calc(100% - #{tokens.$chat-panel-width});
 }
 
 .chat {
-  width: 400px;
+  width: #{tokens.$chat-panel-width};
   position: absolute;
   top: 0;
   right: -50%;
