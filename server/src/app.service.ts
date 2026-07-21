@@ -93,16 +93,20 @@ export class AppService {
     client.to(payload.id).emit<MeetEvent>('init-peer', user);
   }
 
-  async handleMessage(client: Socket, payload: Message): Promise<boolean> {
-    if (messagesCache.has(payload.meetId)) {
-      const messages = messagesCache.get(payload.meetId);
-      messages.push(payload);
-      messagesCache.set(payload.meetId, messages);
+  async handleMessage(client: Socket, payload: Omit<Message, 'id'>): Promise<Message> {
+    const message: Message = { ...payload, id: nanoid() };
+
+    if (messagesCache.has(message.meetId)) {
+      const messages = messagesCache.get(message.meetId);
+      messages.push(message);
+      messagesCache.set(message.meetId, messages);
     } else {
-      messagesCache.set(payload.meetId, [payload]);
+      messagesCache.set(message.meetId, [message]);
     }
 
-    return client.to(payload.meetId).emit<MeetEvent>('message', payload);
+    client.to(message.meetId).emit<MeetEvent>('message', message);
+
+    return message;
   }
 
   async createNewMeet(): Promise<NewMeetAck> {

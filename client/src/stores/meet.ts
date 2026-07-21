@@ -2,7 +2,7 @@ import { ref, shallowRef, markRaw } from 'vue';
 import Peer from 'simple-peer';
 import { defineStore } from 'pinia';
 import type SimplePeer from 'simple-peer';
-import type { JoinAck, JoinPayload, MeetEvent, User, SignalPayload, Message } from '@/types';
+import type { JoinAck, JoinPayload, MeetEvent, User, SignalPayload, Message, OutgoingMessage } from '@/types';
 import { useUserStore } from './user';
 import socket from '../socket';
 
@@ -58,7 +58,7 @@ export const useMeetStore = defineStore('meet', () => {
   }
 
   function sendMessage(text: string) {
-    const message: Message = {
+    const message: OutgoingMessage = {
       text,
       meetId: meetId.value!,
       user: {
@@ -67,9 +67,7 @@ export const useMeetStore = defineStore('meet', () => {
         email: localUser.email!,
       },
     };
-    socket.emit<MeetEvent>('message', message, (received: boolean) => {
-      if (received) addMessage(message);
-    });
+    socket.emit<MeetEvent>('message', message, (ack: Message) => addMessage(ack));
   }
 
   const addMessage = (message: Message) => messages.value.push(message);

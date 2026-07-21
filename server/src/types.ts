@@ -10,6 +10,7 @@ export interface User {
 }
 
 export interface Message {
+  id: string;
   user: User;
   text: string;
   meetId: string;

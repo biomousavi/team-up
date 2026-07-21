@@ -20,12 +20,12 @@ onMounted(() => {
 });
 
 watch(
-  () => meet.messages,
+  () => meet.messages.length,
   () => {
     scroll.value?.scrollTo(0, -(scroll.value.scrollerHeight + 50), 300);
     scroll.value?.refresh();
   },
-  { deep: true, immediate: true },
+  { immediate: true },
 );
 
 function onToggleChat() {
@@ -59,8 +59,8 @@ function sendMessage() {
         <XyzTransitionGroup xyz="fade down appear-stagger">
           <li
             class="message pa-2 ma-1 d-flex algin-center"
-            v-for="(message, index) of meet.messages"
-            :key="index"
+            v-for="message of meet.messages"
+            :key="message.id"
           >
             <div class="rounded-pill d-flex justify-center bg-primary">
               <h6 class="align-self-center text-uppercase">{{ message.user.name?.charAt(0) }}</h6>

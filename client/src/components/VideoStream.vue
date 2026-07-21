@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 
 const props = defineProps({
   name: { type: String, required: true },
@@ -22,6 +22,7 @@ function setStream() {
 }
 
 onMounted(setStream);
+watch(() => props.stream, setStream);
 </script>
 
 <template>
