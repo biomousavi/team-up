@@ -44,12 +44,7 @@ export interface JoinAck {
 }
 
 export type ReservedEvent =
-  | 'connect'
-  | 'connect_error'
-  | 'disconnect'
-  | 'disconnecting'
-  | 'newListener'
-  | 'removeListener';
+  'connect' | 'connect_error' | 'disconnect' | 'disconnecting' | 'newListener' | 'removeListener';
 
 export type MeetEvent = 'join' | 'left' | 'new-meet' | 'signal' | 'init-peer' | 'message';
 

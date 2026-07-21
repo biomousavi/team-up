@@ -1,5 +1,5 @@
 import { plainToClass, Type } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsString, IsUrl, validateSync } from 'class-validator';
+import { IsNotEmpty, IsNumber, validateSync } from 'class-validator';
 
 export enum EnvironmenteEnum {
   Development = 'development',
