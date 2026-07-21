@@ -134,7 +134,7 @@ export const useMeetStore = defineStore('meet', () => {
       });
 
       mediaRecorder.value.start();
-    } catch (error) {
+    } catch {
       throw Error('Cant access to local stream.');
     }
   }
@@ -157,7 +157,7 @@ export const useMeetStore = defineStore('meet', () => {
       stream.getVideoTracks()[0].onended = toggleScreenSHaring;
 
       switchPeerTracks(stream);
-    } catch (error) {
+    } catch {
       throw Error('Cant access to local stream.');
     }
   }
@@ -188,7 +188,7 @@ export const useMeetStore = defineStore('meet', () => {
       switchPeerTracks(localStream.value);
 
       hideAlert();
-    } catch (error) {
+    } catch {
       showAlert(
         'PERMISSION_ERROR: We neet to access to camera and microphone. ' +
           'allow permissions and refresh the page.',
@@ -264,7 +264,7 @@ export const useMeetStore = defineStore('meet', () => {
       socket.emit<MeetEvent>('signal', payload);
     }
 
-    peers.value[user.id].on('connect', (data: any) => {
+    peers.value[user.id].on('connect', (data: unknown) => {
       console.log('connected to peer', data);
     });
 
@@ -309,7 +309,7 @@ export const useMeetStore = defineStore('meet', () => {
 
       // remove created interval
       if (initConnInterval) clearInterval(initConnInterval);
-    } catch (error) {
+    } catch {
       // repeat the process
       if (!initConnInterval) {
         initConnInterval = setInterval(initConnection, 1000);

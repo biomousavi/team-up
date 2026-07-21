@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --fix"
   },
   "dependencies": {
     "@animxyz/vue3": "^0.6.9",
@@ -29,19 +29,20 @@
     "webrtc-adapter": "^9.0.6"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@mdi/js": "^7.4.47",
-    "@rushstack/eslint-patch": "^1.3.2",
     "@types/is-url": "^1.2.32",
     "@types/node": "^22.20.1",
     "@types/simple-peer": "^9.11.9",
     "@vitejs/plugin-vue": "^6.0.8",
-    "@vue/eslint-config-prettier": "^7.1.0",
-    "@vue/eslint-config-typescript": "^11.0.3",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.9.0",
     "@vue/tsconfig": "^0.4.0",
-    "eslint": "^8.43.0",
-    "eslint-plugin-vue": "^9.14.1",
+    "eslint": "^10.7.0",
+    "eslint-plugin-vue": "^10.10.0",
+    "globals": "^17.7.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.8.8",
+    "prettier": "^3.9.6",
     "sass": "^1.101.3",
     "typescript": "^5.9.3",
     "vite": "^7.3.6",

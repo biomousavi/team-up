@@ -28,7 +28,7 @@ const sceneFraction = computed(() => {
 });
 
 const sceneLayout = computed(() => {
-  let gridTemplate: any = { 'grid-template-columns': sceneFraction.value };
+  let gridTemplate: Record<string, string> = { 'grid-template-columns': sceneFraction.value };
 
   // if we had only two users, apply row direction
   if (smAndDown.value && meet.users.length === 2) {
