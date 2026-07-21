@@ -15,7 +15,7 @@ socket.on<ReservedEvent>('connect', () => {
   const user = useUserStore();
   const meet = useMeetStore();
 
-  user.id = socket.id;
+  user.id = socket.id ?? null;
   meet.alertMessage = null;
 });
 

@@ -301,7 +301,7 @@ export const useMeetStore = defineStore('meet', () => {
     }
   }
 
-  let initConnInterval: NodeJS.Timer;
+  let initConnInterval: ReturnType<typeof setInterval>;
   async function initConnection() {
     try {
       await getUserMediaPermission();
