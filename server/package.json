@@ -78,7 +78,6 @@
     "testEnvironment": "node"
   },
   "volta": {
-    "node": "18.12.1",
-    "npm": "9.2.0"
+    "node": "22.11.0"
   }
 }

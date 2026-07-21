@@ -1,4 +1,4 @@
-FROM node:18.12.1-alpine as development
+FROM node:22-alpine AS development
 RUN apk update && apk add bash
 WORKDIR /usr/src/client
 COPY package*.json ./

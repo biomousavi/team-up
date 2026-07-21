@@ -1,4 +1,4 @@
-FROM node:18.12.1-alpine AS development
+FROM node:22-alpine AS development
 RUN apk update && apk add bash
 WORKDIR /usr/src/server
 COPY package*.json ./
@@ -9,7 +9,7 @@ CMD [ "npm", "run", "start:dev" ]
 EXPOSE ${SERVER_PORT}
 
 
-FROM node:18.12.1-alpine AS production
+FROM node:22-alpine AS production
 RUN apk update && apk add bash
 WORKDIR /usr/src/server
 COPY package*.json ./
