@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {
-  mdiMicrophone,
   mdiPhoneHangup,
+  mdiMicrophone,
   mdiMicrophoneOff,
   mdiVideoOutline,
   mdiVideoOffOutline,
@@ -9,42 +9,30 @@ import {
   mdiInformationOutline,
   mdiMessageTextOutline,
   mdiRecordCircleOutline,
+  mdiWeatherNight,
+  mdiWeatherSunny,
 } from '@mdi/js';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useDisplay } from 'vuetify';
 import { useMeetStore } from '@/stores/meet';
+import { useThemeToggle } from '@/composables/useThemeToggle';
 import MeetInfoCard from './MeetInfoCard.vue';
 
 const meet = useMeetStore();
 const display = useDisplay();
+const { toggleTheme, isDark } = useThemeToggle();
 
 const meetInfoModal = ref<boolean>(false);
 const meetingCode = ref<string>('');
 
-const micIcon = ref<string>(mdiMicrophone);
-const micColor = ref<'white' | 'red'>('white');
+const recordIconColor = ref<'on-surface' | 'error'>('on-surface');
 
-const recordIconColor = ref<'white' | 'red'>('white');
-
-const camIcon = ref<string>(mdiVideoOutline);
-const camColor = ref<'white' | 'red'>('white');
+const micIcon = computed(() => (meet.micOn ? mdiMicrophone : mdiMicrophoneOff));
+const camIcon = computed(() => (meet.camOn ? mdiVideoOutline : mdiVideoOffOutline));
 
 async function toggleScreenRecord() {
   await meet.toggleScreenRecording();
-  recordIconColor.value = meet.screenRecordOn === true ? 'red' : 'white';
-}
-
-function onToggleCam() {
-  meet.toggleCamera();
-
-  camIcon.value = meet.camOn ? mdiVideoOutline : mdiVideoOffOutline;
-  camColor.value = camColor.value === 'red' ? 'white' : 'red';
-}
-
-function onToggleMic() {
-  meet.toggleMicrophone();
-  micIcon.value = meet.micOn ? mdiMicrophone : mdiMicrophoneOff;
-  micColor.value = micColor.value === 'red' ? 'white' : 'red';
+  recordIconColor.value = meet.screenRecordOn ? 'error' : 'on-surface';
 }
 
 function onToggleInfo() {
@@ -69,11 +57,11 @@ function onToggleChat() {
     </v-dialog>
 
     <!-- left section -->
-    <div class="text-white d-flex justify-space-between">
+    <div class="readout d-flex justify-space-between text-on-surface font-mono">
       <span>
         {{ meet.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
       </span>
-      <span class="mx-2 text-secondary">|</span>
+      <span class="mx-2 text-medium-emphasis">|</span>
       <span> {{ meet.meetId }} </span>
     </div>
 
@@ -83,9 +71,9 @@ function onToggleChat() {
         <template v-slot:activator="{ props }">
           <v-btn
             size="small"
-            class="mx-2"
-            @click="onToggleMic"
-            :color="micColor"
+            class="mx-2 jack-btn"
+            @click="meet.toggleMicrophone"
+            :color="meet.micOn ? 'success' : 'error'"
             :icon="micIcon"
             v-bind="props"
           ></v-btn>
@@ -96,9 +84,9 @@ function onToggleChat() {
         <template v-slot:activator="{ props }">
           <v-btn
             size="small"
-            class="mx-2"
-            @click="onToggleCam"
-            :color="camColor"
+            class="mx-2 jack-btn"
+            @click="meet.toggleCamera"
+            :color="meet.camOn ? 'success' : 'error'"
             :icon="camIcon"
             v-bind="props"
           ></v-btn>
@@ -109,9 +97,9 @@ function onToggleChat() {
         <template v-slot:activator="{ props }">
           <v-btn
             size="small"
-            class="mx-2"
+            class="mx-2 jack-btn"
             @click="meet.toggleScreenSHaring"
-            :color="meet.screenShareOn ? 'primary' : 'white'"
+            :color="meet.screenShareOn ? 'primary' : 'on-surface'"
             :icon="mdiMonitorScreenshot"
             v-bind="props"
           ></v-btn>
@@ -121,7 +109,7 @@ function onToggleChat() {
       <v-tooltip location="top center" text="Leave Call">
         <template v-slot:activator="{ props }">
           <div class="leave-call-icon mx-2">
-            <v-btn color="red" to="/" @click="meet.leaveRoom" rounded="pill" block v-bind="props">
+            <v-btn color="error" to="/" @click="meet.leaveRoom" rounded="pill" block v-bind="props">
               <v-icon size="x-large" :icon="mdiPhoneHangup"></v-icon>
             </v-btn>
           </div>
@@ -134,7 +122,7 @@ function onToggleChat() {
             @click="toggleScreenRecord"
             :color="recordIconColor"
             size="small"
-            class="mx-2"
+            class="mx-2 jack-btn"
             :icon="mdiRecordCircleOutline"
             v-bind="props"
           />
@@ -148,7 +136,7 @@ function onToggleChat() {
         <template v-slot:activator="{ props }">
           <v-btn
             variant="text"
-            color="white"
+            color="on-surface"
             v-bind="props"
             @click="onToggleInfo"
             :icon="mdiInformationOutline"
@@ -160,10 +148,22 @@ function onToggleChat() {
         <template v-slot:activator="{ props }">
           <v-btn
             variant="text"
-            :color="meet.chatOn ? 'blue' : 'white'"
+            :color="meet.chatOn ? 'primary' : 'on-surface'"
             v-bind="props"
             @click="onToggleChat"
             :icon="mdiMessageTextOutline"
+          ></v-btn>
+        </template>
+      </v-tooltip>
+
+      <v-tooltip :text="isDark() ? 'Switch to light theme' : 'Switch to dark theme'" location="top center">
+        <template v-slot:activator="{ props }">
+          <v-btn
+            variant="text"
+            color="on-surface"
+            v-bind="props"
+            @click="toggleTheme"
+            :icon="isDark() ? mdiWeatherSunny : mdiWeatherNight"
           ></v-btn>
         </template>
       </v-tooltip>
@@ -171,12 +171,19 @@ function onToggleChat() {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use '../assets/tokens' as tokens;
+
 .leave-call-icon {
   width: 80px;
 }
 
-@media only screen and (max-width: 960px) {
+.jack-btn:hover,
+.jack-btn:focus-visible {
+  box-shadow: 0 0 0 2px rgb(var(--v-theme-secondary));
+}
+
+@media only screen and (max-width: #{tokens.$mobile-breakpoint}) {
   .navigation > div {
     width: 100%;
   }

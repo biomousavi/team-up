@@ -53,6 +53,8 @@ function onToggleNavigation() {
       :name="localUser.name!"
       :stream="meet.localStream!"
       :mute="true"
+      :is-local="true"
+      :mic-on="meet.micOn"
     />
 
     <!-- remote streams -->
@@ -70,7 +72,9 @@ function onToggleNavigation() {
   </XyzTransitionGroup>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use '../assets/tokens' as tokens;
+
 .scene {
   position: relative;
   width: 100%;
@@ -83,10 +87,10 @@ function onToggleNavigation() {
 }
 
 .chat-on .scene {
-  width: calc(100% - 400px);
+  width: calc(100% - #{tokens.$chat-panel-width});
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (max-width: #{tokens.$mobile-breakpoint}) {
   .chat-on .scene {
     width: 100%;
   }

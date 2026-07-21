@@ -5,11 +5,13 @@ const props = defineProps({
   name: { type: String, required: true },
   stream: { type: MediaStream, required: true },
   mute: { required: false, default: false, type: Boolean },
+  isLocal: { required: false, default: false, type: Boolean },
+  micOn: { required: false, default: true, type: Boolean },
 });
 
 const video = ref<HTMLVideoElement>();
 
-function setStram() {
+function setStream() {
   video.value!.srcObject = props.stream;
   video.value!.autoplay = true;
   video.value!.playsInline = true;
@@ -19,22 +21,29 @@ function setStram() {
   };
 }
 
-onMounted(setStram);
+onMounted(setStream);
 </script>
 
 <template>
-  <div class="video-wrapper bg-grey-darken-3">
+  <div class="video-wrapper bg-surface-variant" :class="{ 'video-wrapper--live': isLocal && micOn }">
     <video :muted="props.mute" ref="video" class="w-100"></video>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use '../assets/tokens' as tokens;
+
 .video-wrapper {
-  border: 1px solid rgba(170, 170, 170, 0.2);
+  border: 1px solid tokens.$tile-border-color;
   overflow: hidden;
   height: 100%;
-  border-radius: 10px;
+  border-radius: tokens.$radius-md;
   transition: all 0.3s ease;
+}
+
+.video-wrapper--live {
+  border-color: rgb(var(--v-theme-secondary));
+  box-shadow: 0 0 0 2px rgb(var(--v-theme-secondary));
 }
 
 video {

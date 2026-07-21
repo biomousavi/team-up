@@ -46,7 +46,7 @@ onMounted(initMeeting);
 <style scoped>
 .main {
   max-height: 100vh;
-  background-color: #202124;
+  background-color: rgb(var(--v-theme-background));
 }
 
 .container {
