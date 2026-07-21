@@ -1,15 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
-:root {
-  /* IE and Edge */
+/* Reserved for elements with custom scroll UX (e.g. the chat message list,
+   which uses BetterScroll) — NOT applied app-wide, so scrollbars stay
+   discoverable everywhere else. */
+.scroll-region {
   -ms-overflow-style: none;
-  /* Firefox */
   scrollbar-width: none;
 }
 
-/*  hide the scrollbar */
-::-webkit-scrollbar {
-  width: 0; 
+.scroll-region::-webkit-scrollbar {
+  width: 0;
+}
+
+.font-mono {
+  font-family: 'IBM Plex Mono', monospace;
 }
 
 div.v-row {
