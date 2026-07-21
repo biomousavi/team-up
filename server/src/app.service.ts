@@ -37,13 +37,22 @@ export class AppService {
   }
 
   async left(client: Socket, meetId: string): Promise<void> {
-    if (client.rooms.has(meetId)) {
-      await client.leave(meetId);
-    }
+    // already left this room (e.g. explicit leave already ran) — nothing to do
+    if (!client.rooms.has(meetId)) return;
+
+    await client.leave(meetId);
+
     // informing other users of joining a new user
     client.to(meetId).emit<MeetEvent>('left', { id: client.id });
 
     this.removeUser(meetId, { id: client.id });
+
+    // garbage-collect an empty meeting
+    const meet = meetsCache.get(meetId);
+    if (meet && meet.users.length === 0) {
+      meetsCache.delete(meetId);
+      messagesCache.delete(meetId);
+    }
   }
 
   async join(client: Socket, payload: JoinPayload): Promise<JoinAck> {
@@ -65,11 +74,6 @@ export class AppService {
 
       // add user to cache
       this.addUser(meetId, user);
-
-      // notify other users when someone left the room
-      client.on('disconnect', () => {
-        this.left(client, meetId);
-      });
 
       const users = meetsCache.get(meetId).users;
       const messages = messagesCache.get(meetId) || [];

@@ -44,7 +44,10 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   handleDisconnect(client: Socket) {
-    console.log(client.id, ' disconnected');
+    const meetId = [...client.rooms].find((room) => room !== client.id);
+    if (meetId) {
+      this.appService.left(client, meetId);
+    }
   }
 
   handleConnection(client: Socket) {
