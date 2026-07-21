@@ -6,6 +6,22 @@ import type { JoinAck, JoinPayload, MeetEvent, User, SignalPayload, Message, Out
 import { useUserStore } from './user';
 import socket from '../socket';
 
+type PeerWithConnection = SimplePeer.Instance & { _pc: RTCPeerConnection };
+
+async function capSenderBitrate(peer: SimplePeer.Instance, maxBitrate: number) {
+  const pc = (peer as unknown as PeerWithConnection)._pc;
+  const videoSender = pc?.getSenders().find((sender) => sender.track?.kind === 'video');
+  if (!videoSender) return;
+
+  const params = videoSender.getParameters();
+  if (!params.encodings?.length) params.encodings = [{}];
+  params.encodings[0].maxBitrate = maxBitrate;
+  await videoSender.setParameters(params);
+}
+
+const CAMERA_MAX_BITRATE = 1_500_000;
+const SCREEN_SHARE_MAX_BITRATE = 2_500_000;
+
 export const useMeetStore = defineStore('meet', () => {
   const localUser = useUserStore();
 
@@ -154,13 +170,13 @@ export const useMeetStore = defineStore('meet', () => {
       // when somebody clicked on "Stop sharing"
       stream.getVideoTracks()[0].onended = toggleScreenSHaring;
 
-      switchPeerTracks(stream);
+      switchPeerTracks(stream, SCREEN_SHARE_MAX_BITRATE);
     } catch {
       throw Error('Cant access to local stream.');
     }
   }
 
-  const switchPeerTracks = (stream: MediaStream) => {
+  const switchPeerTracks = (stream: MediaStream, maxBitrate: number) => {
     for (const socket_id in peers.value) {
       for (const index in peers.value[socket_id].streams[0].getTracks()) {
         for (const index2 in stream.getTracks()) {
@@ -177,15 +193,20 @@ export const useMeetStore = defineStore('meet', () => {
           }
         }
       }
+
+      capSenderBitrate(peers.value[socket_id], maxBitrate);
     }
   };
 
   async function getUserMediaPermission() {
     try {
       localStream.value = markRaw(
-        await navigator.mediaDevices.getUserMedia({ audio: true, video: true }),
+        await navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: { width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 } },
+        }),
       );
-      switchPeerTracks(localStream.value);
+      switchPeerTracks(localStream.value, CAMERA_MAX_BITRATE);
 
       hideAlert();
     } catch {
@@ -266,6 +287,7 @@ export const useMeetStore = defineStore('meet', () => {
 
     peers.value[user.id].on('connect', (data: unknown) => {
       console.log('connected to peer', data);
+      capSenderBitrate(peers.value[user.id], CAMERA_MAX_BITRATE);
     });
 
     // // when we stablished connection with other users
