@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, shallowRef, markRaw } from 'vue';
 import Peer from 'simple-peer';
 import { defineStore } from 'pinia';
 import type SimplePeer from 'simple-peer';
@@ -21,7 +21,7 @@ export const useMeetStore = defineStore('meet', () => {
   const screenShareOn = ref<boolean>(false);
   const screenRecordOn = ref<boolean>(false);
 
-  const mediaRecorder = ref<MediaRecorder | null>();
+  const mediaRecorder = shallowRef<MediaRecorder | null>();
 
   // Meet messages
   const messages = ref<Message[]>([]);
@@ -33,8 +33,8 @@ export const useMeetStore = defineStore('meet', () => {
   // update Date object every minute
   const dateInterval = setInterval(() => (date.value = new Date()), 60000);
 
-  const localStream = ref<MediaStream | null>(null);
-  const peers = ref<{ [key: string]: SimplePeer.Instance }>({});
+  const localStream = shallowRef<MediaStream | null>(null);
+  const peers = shallowRef<{ [key: string]: SimplePeer.Instance }>({});
 
   const alertMessage = ref<string | null>();
   const hideAlert = () => (alertMessage.value = null);
@@ -184,7 +184,9 @@ export const useMeetStore = defineStore('meet', () => {
 
   async function getUserMediaPermission() {
     try {
-      localStream.value = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+      localStream.value = markRaw(
+        await navigator.mediaDevices.getUserMedia({ audio: true, video: true }),
+      );
       switchPeerTracks(localStream.value);
 
       hideAlert();
@@ -249,7 +251,7 @@ export const useMeetStore = defineStore('meet', () => {
       config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] },
     };
 
-    peers.value[user.id] = new Peer(peerOptions);
+    peers.value[user.id] = markRaw(new Peer(peerOptions));
 
     // catch error event
     peers.value[user.id].on('error', (error) => {
@@ -275,7 +277,7 @@ export const useMeetStore = defineStore('meet', () => {
 
       users.value.forEach((u) => {
         if (u.id === user.id) {
-          u.mediaStream = data;
+          u.mediaStream = markRaw(data);
           return u;
         }
       });
