@@ -8,19 +8,27 @@ import socket from '../socket';
 
 type PeerWithConnection = SimplePeer.Instance & { _pc: RTCPeerConnection };
 
-async function capSenderBitrate(peer: SimplePeer.Instance, maxBitrate: number) {
+// Cap the outgoing send bitrate per track. Video uses the passed cap
+// (camera vs screen-share); audio always gets the high-quality Opus cap.
+async function capSenderBitrate(peer: SimplePeer.Instance, videoBitrate: number) {
   const pc = (peer as unknown as PeerWithConnection)._pc;
-  const videoSender = pc?.getSenders().find((sender) => sender.track?.kind === 'video');
-  if (!videoSender) return;
+  if (!pc) return;
 
-  const params = videoSender.getParameters();
-  if (!params.encodings?.length) params.encodings = [{}];
-  params.encodings[0].maxBitrate = maxBitrate;
-  await videoSender.setParameters(params);
+  for (const sender of pc.getSenders()) {
+    const kind = sender.track?.kind;
+    if (kind !== 'video' && kind !== 'audio') continue;
+
+    const params = sender.getParameters();
+    if (!params.encodings?.length) params.encodings = [{}];
+    params.encodings[0].maxBitrate = kind === 'video' ? videoBitrate : AUDIO_MAX_BITRATE;
+    await sender.setParameters(params);
+  }
 }
 
-const CAMERA_MAX_BITRATE = 1_500_000;
-const SCREEN_SHARE_MAX_BITRATE = 2_500_000;
+// Quality-first caps (this is a demo — favor quality over mesh bandwidth).
+const CAMERA_MAX_BITRATE = 4_000_000;
+const SCREEN_SHARE_MAX_BITRATE = 5_000_000;
+const AUDIO_MAX_BITRATE = 96_000;
 
 export const useMeetStore = defineStore('meet', () => {
   const localUser = useUserStore();
@@ -125,7 +133,10 @@ export const useMeetStore = defineStore('meet', () => {
         ? 'video/webm; codecs=vp9'
         : 'video/webm';
 
-      const stream = await navigator.mediaDevices.getDisplayMedia({ audio: true, video: true });
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        audio: true,
+        video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30 } },
+      });
       mediaRecorder.value = new MediaRecorder(stream, { mimeType });
 
       const chunks: Blob[] = [];
@@ -165,7 +176,10 @@ export const useMeetStore = defineStore('meet', () => {
 
   async function getUserScreenMedia() {
     try {
-      const stream = await navigator.mediaDevices.getDisplayMedia({ audio: true, video: true });
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        audio: true,
+        video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30 } },
+      });
 
       // when somebody clicked on "Stop sharing"
       stream.getVideoTracks()[0].onended = toggleScreenSHaring;
@@ -202,8 +216,16 @@ export const useMeetStore = defineStore('meet', () => {
     try {
       localStream.value = markRaw(
         await navigator.mediaDevices.getUserMedia({
-          audio: true,
-          video: { width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 } },
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+            sampleRate: 48000,
+          },
+          // 1080p ideal = native for virtually every webcam; the local
+          // self-view renders this raw capture, so this is what makes your
+          // own tile crisp.
+          video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30 } },
         }),
       );
       switchPeerTracks(localStream.value, CAMERA_MAX_BITRATE);
