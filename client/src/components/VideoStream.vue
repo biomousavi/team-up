@@ -43,8 +43,8 @@ watch(() => props.stream, setStream);
 }
 
 .video-wrapper--live {
-  border-color: rgb(var(--v-theme-secondary));
-  box-shadow: 0 0 0 2px rgb(var(--v-theme-secondary));
+  border-color: rgb(var(--v-theme-accent));
+  box-shadow: 0 0 0 2px rgb(var(--v-theme-accent));
 }
 
 video {

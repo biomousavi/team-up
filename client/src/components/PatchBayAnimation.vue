@@ -57,7 +57,7 @@ const activeIds = new Set(['a2', 'b3']);
 
 .cable {
   fill: none;
-  stroke: rgb(var(--v-theme-secondary));
+  stroke: rgb(var(--v-theme-accent));
   stroke-width: 3;
   stroke-linecap: round;
   stroke-dasharray: 260;

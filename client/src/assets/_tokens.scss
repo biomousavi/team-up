@@ -5,9 +5,8 @@ $radius-sm: 8px;
 $radius-md: 12px;
 $radius-lg: 16px;
 
-// Low-opacity Brass tint — replaces the old neutral rgba(170,170,170,0.2)
-// tile border with a quiet nod to the Patch Bay accent.
-$tile-border-color: rgba(200, 135, 75, 0.18);
+// Low-opacity accent (amber) tint on video tiles — a quiet nod to the accent.
+$tile-border-color: rgba(224, 169, 74, 0.16);
 
 $font-family-display: 'Space Grotesk', 'Roboto', sans-serif;
 $font-family-mono: 'IBM Plex Mono', monospace;

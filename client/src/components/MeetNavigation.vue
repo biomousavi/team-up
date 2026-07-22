@@ -180,7 +180,7 @@ function onToggleChat() {
 
 .jack-btn:hover,
 .jack-btn:focus-visible {
-  box-shadow: 0 0 0 2px rgb(var(--v-theme-secondary));
+  box-shadow: 0 0 0 2px rgb(var(--v-theme-accent));
 }
 
 @media only screen and (max-width: #{tokens.$mobile-breakpoint}) {
